@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "345209378114",
+    "firebase_url": "https://fermatacorona.firebaseio.com",
+    "project_id": "fermatacorona",
+    "storage_bucket": "fermatacorona.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345209378114:android:b845f3e965a53d9b72a4db",
+        "android_client_info": {
+          "package_name": "site.fermata.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345209378114-4564ba5h94ode6hbkgm3h28qstd04c45.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkINRMLriT1_5jDnyjGBtCDlVB58J7cYU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345209378114-4564ba5h94ode6hbkgm3h28qstd04c45.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
