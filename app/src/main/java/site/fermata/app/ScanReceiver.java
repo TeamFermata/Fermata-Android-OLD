@@ -48,10 +48,10 @@ public class ScanReceiver extends BroadcastReceiver {
         if(intent.hasExtra("uuid")) {
             OkHttpClient client;  client=HttpClient.get();
             String uuid=intent.getStringExtra("uuid");
-            JSONObject jsonObject=new JSONObject();
+
             ArrayList<String> list = new ArrayList<String>();
             list.add(uuid);
-
+            JSONObject jsonObject=new JSONObject();
             try {
 
                 jsonObject.put("myID", prf.getString("id",""));
@@ -63,47 +63,9 @@ public class ScanReceiver extends BroadcastReceiver {
 
 
 
-            Single login= Single.create(new SingleOnSubscribe<String>() {
-                @Override
-                public void subscribe(SingleEmitter<String> emitter) throws Exception {
-                    String  session;
 
 
-
-
-
-                        Request request = new Request.Builder()
-                                //.addHeader("x-api-key", RestTestCommon.API_KEY)
-                                .url(SERVER_URL+"/api/user")
-                                //.get()
-                                .post(RequestBody.create(MediaType.parse("application/json"),    String.format("{\"id\":\"%s\",\"pw\":\"%s\"}", prf.getString("id",""),prf.getString("key",""))))
-                                .build();
-
-
-                        Response responses = client.newCall(request).execute();
-
-                        String jsonData = responses.body().string();
-
-                        JSONObject json = new JSONObject(jsonData);
-                        String code= json.getString("code");
-                        if(code.equals("success")) {
-
-                            session= json.getString("sessionID");
-
-                            prf.edit().putString("session",session).apply();
-
-
-                        } else {
-
-                            throw new Exception();
-                        }
-
-                    emitter.onSuccess(session);
-
-                }
-            });
-
-            (!prf.contains("session")?login: Single.just(prf.getString("session","")))
+         HttpClient.login(prf)
 
                  .flatMap(
 
@@ -135,7 +97,7 @@ public class ScanReceiver extends BroadcastReceiver {
 
                                      return Single.just("");
                                  } else {
-                                     return  login.flatMap(this);
+                                     return  HttpClient.login(prf).flatMap(this);
 
                                  }
 

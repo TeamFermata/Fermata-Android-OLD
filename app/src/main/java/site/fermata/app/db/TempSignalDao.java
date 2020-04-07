@@ -11,8 +11,8 @@ import site.fermata.app.Constants;
 
 @Dao
 public interface TempSignalDao {
-    @Query("SELECT * FROM tempsignal")
-    List<TempSignal> getAllSignal();
+    @Query("SELECT uuid FROM tempsignal")
+    List<String> getAllSignal();
 
     @Insert
     void insert(TempSignal... tempsignal);

@@ -34,7 +34,7 @@ public class Constants {
 
     public static final ParcelUuid Service_UUID = ParcelUuid
             .fromString("40e30d2c-17a2-4bbe-83a9-5b2cbf10ee1b");
-    public static final byte[] maskbit = {32,23,99,47,12,-32,45,23,11};
+   // public static final byte[] maskbit = {32,23,99,47,12,-32,45,23,11};
 
     public static final int REQUEST_ENABLE_BT = 1;
 

@@ -45,7 +45,7 @@ import java.util.concurrent.TimeUnit;
 
 import static site.fermata.app.Constants.CHECH_MINSEC;
 import static site.fermata.app.Constants.Service_UUID;
-import static site.fermata.app.Constants.maskbit;
+
 
 /**
  * Manages BLE Advertising independent of the main app.

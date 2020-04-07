@@ -44,16 +44,7 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
-import static site.fermata.app.Constants.ACTION_RERUN;
-import static site.fermata.app.Constants.SERVER_URL;
 
 /**
  * Setup display fragments and ensure the device supports Bluetooth.
@@ -72,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         SharedPreferences prf = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
 
 
         if(prf.contains("id")&&prf.contains("key")   ) {
@@ -139,6 +129,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle(R.string.activity_main_title);
 
+        findViewById(R.id.query_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),AskActivity.class));
+            }
+        });
+        findViewById(R.id.insert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),InsertActivity.class));
+            }
+        });
 
         ( (Button) findViewById(R.id.new_signal_button)).setOnClickListener(new View.OnClickListener() {
             @Override
