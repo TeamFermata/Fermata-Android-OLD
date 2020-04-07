@@ -6,26 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".InsertActivity">
 
+
     <WebView
         android:id="@+id/webView1"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
 
     </WebView>
-
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#fcfcfc"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/insert_btn"
 
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/insert_btn"
         tools:layout_editor_absoluteX="10dp">
 
         <CheckBox
@@ -39,12 +43,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="담당자 이메일(****.go.kr)" />
+                android:hint="나의 핸드폰 마지막 4개" />
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -55,7 +64,11 @@
                 android:layout_height="wrap_content"
                 android:hint="자가격리자 식별번호 뒤 4자리" />
         </com.google.android.material.textfield.TextInputLayout>
-
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="전담 공무원 이메일(****.go.kr)" />
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <Button
