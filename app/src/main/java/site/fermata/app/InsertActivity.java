@@ -32,6 +32,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.reactivestreams.Subscriber;
@@ -74,7 +76,9 @@ public class InsertActivity extends AppCompatActivity {
 
         SharedPreferences prf = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         JSONObject jsonObject=new JSONObject();
-
+        final TextInputLayout email = (TextInputLayout) findViewById(R.id.email);
+        final TextInputLayout numstr = (TextInputLayout) findViewById(R.id.numstr);
+        final TextInputLayout pnumstr = (TextInputLayout) findViewById(R.id.pnumstr);
 
 
 
@@ -87,8 +91,10 @@ public class InsertActivity extends AppCompatActivity {
                             @Override
                             public SingleSource<String> apply(String ss) throws Exception {
 
-                                jsonObject.put("email", "test@test");
-                                jsonObject.put("numstr", "4334");
+                                jsonObject.put("email", email.getEditText().getText().toString());
+                                jsonObject.put("pnumstr", pnumstr.getEditText().getText().toString());
+
+                                jsonObject.put("numstr", numstr.getEditText().getText().toString());
 
                                 List<String> list = AppDatabase
                                         .getInstance(getApplicationContext())

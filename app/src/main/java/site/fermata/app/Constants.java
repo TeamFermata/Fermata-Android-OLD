@@ -30,7 +30,7 @@ public class Constants {
 
     public static  final int CHECK_SPAN_DAY= 21;
 
-    public static final int CHECH_MINSEC = 15;
+    public static final int CHECH_MINSEC = 20;
 
     public static final ParcelUuid Service_UUID = ParcelUuid
             .fromString("40e30d2c-17a2-4bbe-83a9-5b2cbf10ee1b");

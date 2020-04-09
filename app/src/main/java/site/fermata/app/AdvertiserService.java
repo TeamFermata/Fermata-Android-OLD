@@ -34,12 +34,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.nio.ByteBuffer;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -133,8 +136,67 @@ public class    AdvertiserService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if(mBluetoothLeAdvertiser!=null) stopAdvertising();
-        startAdvertising();
+
+
+        /*boolean run=true;
+        if(cachedUUID!=null){
+            for( Map.Entry<String, Integer> elem : cachedUUID.entrySet() ){
+               int g=elem.getValue();
+                if(g<0) continue;
+                if( now< g+CHECH_MINSEC   ) run=false;
+            }
+
+
+
+        }
+*/
+  //      if(run) {
+            if (mBluetoothLeAdvertiser != null) stopAdvertising();
+            startAdvertising();
+
+            Calendar rightNow = Calendar.getInstance();
+            int hour = rightNow.get(Calendar.HOUR_OF_DAY);
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+
+                AppDatabase instance = AppDatabase
+                        .getInstance(context);
+                if( hour ==3) {
+                    instance
+                            .getTempSignalDao()
+                            .deleteOld();
+                    instance
+                            .getSignalLogDao()
+                            .deleteOld();
+
+                }
+
+
+
+                int now= (int) (System.currentTimeMillis()/1000);
+
+             String[] records =instance.getSignalLogDao().getUUIDRecord(now-CHECH_MINSEC);
+
+              if(records!=null& records.length>0){
+
+                  context.sendBroadcast(new Intent( context , ScanReceiver.class).putExtra("uuid",records)
+                  .putExtra("time",now));
+
+
+              }
+
+
+
+            }
+        }) .start() ;
+
+
+
+
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -154,10 +216,14 @@ public class    AdvertiserService extends Service {
 
 
                 } else {
-                    Toast.makeText(this, getString(R.string.bt_null), Toast.LENGTH_LONG).show();
+
+                    stopped("블루투스 꺼짐");
+                   // Toast.makeText(this, getString(R.string.bt_null), Toast.LENGTH_LONG).show();
                 }
             } else {
-                Toast.makeText(this, getString(R.string.bt_null), Toast.LENGTH_LONG).show();
+
+                stopped("시작오류");
+               // Toast.makeText(this, getString(R.string.bt_null), Toast.LENGTH_LONG).show();
             }
         }
 
@@ -203,6 +269,8 @@ public class    AdvertiserService extends Service {
                     mAdvertiseCallback);
 
 
+            } else {
+                stopped("블루투스 꺼짐");
             }
         }
     }
@@ -218,22 +286,38 @@ public class    AdvertiserService extends Service {
             notificationIntent, 0);
 
 
-        Notification n = new Notification.Builder(this)
-            .setContentTitle("Advertising device via Bluetooth")
-            .setContentText("This device is discoverable to others nearby.")
-            .setSmallIcon(R.drawable.ic_stat_name)
-            .setContentIntent(pendingIntent)
-            .build();
+        NotificationCompat.Builder n = mNotificationHelper
+                .getNotification("페르마타가 실행중입니다.", "", pendingIntent);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            startMyOwnForeground();
-        else
-           // startForeground(1, new Notification());
-        startForeground(FOREGROUND_NOTIFICATION_ID, n);
+
+        startForeground(FOREGROUND_NOTIFICATION_ID, n.build());
+    }
+
+    private void stopped(String s){
+
+        stopAdvertising();
+        stopScanning();
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                notificationIntent, 0);
+
+
+        NotificationCompat.Builder n = mNotificationHelper
+
+
+                .getNotification("페르마타 중지됨-"+s, "터치하면 다시 시작합니다.", pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                ;
+
+
+
+        mNotificationHelper.notify(FOREGROUND_NOTIFICATION_ID, n);
+
+
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+/*    @RequiresApi(api = Build.VERSION_CODES.O)
     private void startMyOwnForeground(){
         String NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
         String channelName = "My Background Service";
@@ -247,12 +331,12 @@ public class    AdvertiserService extends Service {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         Notification notification = notificationBuilder.setOngoing(true)
                 .setSmallIcon(R.drawable.ic_stat_name)
-                .setContentTitle("App is running in background")
+                .setContentTitle("페르마타가 실행중입니다.")
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
         startForeground(2, notification);
-    }
+    }*/
 
     /**
      * Stops BLE Advertising.
@@ -429,15 +513,15 @@ public class    AdvertiserService extends Service {
             // Kick off a new scan.
             mScanCallback = new SampleScanCallback();
 
-            if(mBluetoothLeScanner==null) return; //todo
+            if(mBluetoothLeScanner==null) {
+
+                stopped("블루투스 꺼짐");
+                return; }
             mBluetoothLeScanner.startScan(buildScanFilters(), buildScanSettings(), mScanCallback);
 
-            String toastText = getString(R.string.scan_start_toast) + " "
-                    + TimeUnit.SECONDS.convert(SCAN_PERIOD, TimeUnit.MILLISECONDS) + " "
-                    + getString(R.string.seconds);
-            Toast.makeText(getApplicationContext(), toastText, Toast.LENGTH_LONG).show();
+
         } else {
-            Toast.makeText(getApplicationContext(), R.string.already_scanning, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getApplicationContext(), R.string.already_scanning, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -500,7 +584,7 @@ public class    AdvertiserService extends Service {
     private  void  checkScan(ScanResult result ){
 
 
-        int now=(int) System.currentTimeMillis()/1000;
+       final int now=(int) (System.currentTimeMillis()/1000);
 
         //;
 
@@ -509,68 +593,82 @@ public class    AdvertiserService extends Service {
 
             String uuid=bytesToHex(signal);
             Integer h = cachedUUID.get(uuid);
-            if( h!=null &&  h<0  ) {
+            if( now> h+ 60*60 ) {
                 //cachedUUID.remove(uuid);
-               return;
+                cachedUUID.remove(uuid);
             } else if(h==null) {
 
                 cachedUUID.put(uuid,now);
-            } else if( now-h> CHECH_MINSEC)
-            {
+            } else if(h<0){
+                int f=-h;
 
-                class NewRunnable implements Runnable {
-
+                new Thread(new Runnable() {
                     @Override
                     public void run() {
+
 
                         AppDatabase
                                 .getInstance(context)
                                 .getSignalLogDao()
-                                .insert(new SignalLog(uuid,result.getRssi(),true,23));
 
-                                    ;
+                                .updateTimeSpan(uuid,f, now-f);
 
-
-                                cachedUUID.put(uuid,-now);
 
                     }
-                }
-
-                NewRunnable nr = new NewRunnable() ;
-                Thread t = new Thread(nr) ;
-                t.start() ;
-
-                Intent intent=new Intent(context,ScanReceiver.class);
-
-                intent.putExtra("uuid",uuid.toString());
-                intent.putExtra("rssi",result.getRssi());
-                context.sendBroadcast(intent);
-
-
-                Notification n = new Notification.Builder(this)
-                        .setContentTitle("scanced")
-                        .setContentText(uuid.toString() )
-                        .setSmallIcon(R.drawable.ic_stat_name)
-                        .build();
-
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-
-                // notificationId is a unique int for each notification that you must define
-                notificationManager.notify(now%2323, n);
-
-
-                NotificationCompat.Builder mBuilder = mNotificationHelper
-                        .getNotification("접근발견",
-                                uuid.toString(), null)
-                      //  .setSmallIcon(android.R.drawable.stat_notify_error)
-                        ;
-                // attached Retry action in notification
-
-                // Notify notification
-                mNotificationHelper.notify(5, mBuilder);
+                }) .start() ;
 
 
             }
+                else if( now-h> CHECH_MINSEC)
+            {
+
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        AppDatabase
+                                .getInstance(context)
+                                .getSignalLogDao()
+                                .insert(new SignalLog(uuid,result.getRssi(),true, CHECH_MINSEC , now));
+
+
+
+
+                        cachedUUID.put(uuid,-now);
+
+                    }
+                }) .start() ;
+
+
+                if(true ||BuildConfig.DEBUG ) {
+
+
+
+                    Notification n = new Notification.Builder(this)
+                            .setContentTitle("scanced")
+                            .setContentText(uuid.toString())
+                            .setSmallIcon(R.drawable.ic_stat_name)
+                            .build();
+
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+
+                    // notificationId is a unique int for each notification that you must define
+                    notificationManager.notify(now % 2323, n);
+
+
+                    NotificationCompat.Builder mBuilder = mNotificationHelper
+                            .getNotification("알파버젼테스트용 알림-접근발견",
+                                    uuid.toString(), null)
+                            //  .setSmallIcon(android.R.drawable.stat_notify_error)
+                            ;
+                    // attached Retry action in notification
+
+                    // Notify notification
+                    mNotificationHelper.notify(5, mBuilder);
+                }
+
+            }
+
 
 
 

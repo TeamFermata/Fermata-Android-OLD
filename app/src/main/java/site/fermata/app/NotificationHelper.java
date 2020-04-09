@@ -42,7 +42,7 @@ public class NotificationHelper extends ContextWrapper {
                 .setOngoing(true)
                 //.setContentIntent(resultPendingIntent)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         mBuilder.setVibrate(new long[]{0L});
         mBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         mBuilder.setProgress(100, progress, false);

@@ -10,10 +10,12 @@ import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
 
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.preference.PreferenceManager;
 import io.reactivex.Flowable;
@@ -45,23 +47,22 @@ public class ScanReceiver extends BroadcastReceiver {
         PendingResult p = goAsync();
         SharedPreferences prf = PreferenceManager.getDefaultSharedPreferences(context);
 
+
+
+
         if(intent.hasExtra("uuid")) {
             OkHttpClient client;  client=HttpClient.get();
-            String uuid=intent.getStringExtra("uuid");
-
-            ArrayList<String> list = new ArrayList<String>();
-            list.add(uuid);
+            String[] uuid=intent.getStringArrayExtra("uuid");
+            final int time=intent.getIntExtra("time",0);
             JSONObject jsonObject=new JSONObject();
             try {
 
                 jsonObject.put("myID", prf.getString("id",""));
-                jsonObject.put("record",  new JSONArray(list));
+                jsonObject.put("record",  new JSONArray(uuid));
 
             } catch (Exception e){
                 Log.d("",e.toString());
             }
-
-
 
 
 
@@ -95,6 +96,14 @@ public class ScanReceiver extends BroadcastReceiver {
 
                                      prf.edit().putString("session",session).apply();
 
+
+                                     AppDatabase instance = AppDatabase
+                                             .getInstance(context);
+
+                                         instance
+                                                 .getSignalLogDao()
+                                                 .flagUploaded(time);
+
                                      return Single.just("");
                                  } else {
                                      return  HttpClient.login(prf).flatMap(this);
@@ -113,7 +122,9 @@ public class ScanReceiver extends BroadcastReceiver {
                 }
 
                 @Override
-                public void onSuccess(String s) {
+                public void onSuccess(String s)
+
+                {
                     p.finish();
                 }
 
@@ -126,12 +137,8 @@ public class ScanReceiver extends BroadcastReceiver {
 
 
 
-        }else
-        if( intent.hasExtra("tempsignal")) {
-
-
-
         }
+
         else {
             // Set the alarm here.
 
@@ -155,6 +162,9 @@ public class ScanReceiver extends BroadcastReceiver {
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
                     SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR,
                     AlarmManager.INTERVAL_HOUR, pendingIntent);
+
+
+
                 p.finish();
         }
     }

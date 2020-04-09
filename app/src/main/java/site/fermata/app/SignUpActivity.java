@@ -1,6 +1,5 @@
 package site.fermata.app;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -9,17 +8,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -27,18 +20,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.security.SecureRandom;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static site.fermata.app.Constants.SERVER_URL;
 import static site.fermata.app.PasswordGenerator.generateRandomPassword;
@@ -46,7 +32,7 @@ import static site.fermata.app.PasswordGenerator.generateRandomPassword;
 public class SignUpActivity extends Activity {
 
 
-
+    public static final String MAINURL = "https://docs.google.com/document/d/e/2PACX-1vTqkxxRmJ-EIUzQb533qR_n_pDVLizbuUpfUz3UCuDv4DhAIPdy8eIIaXUa06KFnyUakha3ViFIKQdz/pub";
     private BluetoothAdapter mBluetoothAdapter;
 
 
@@ -75,7 +61,7 @@ public class SignUpActivity extends Activity {
         mWebSettings.setCacheMode(WebSettings.LOAD_DEFAULT); // 브라우저 캐시 허용 여부
         mWebSettings.setDomStorageEnabled(true); // 로컬저장소 허용 여부
 
-        mWebView.loadUrl("https://docs.google.com/document/d/e/2PACX-1vTqkxxRmJ-EIUzQb533qR_n_pDVLizbuUpfUz3UCuDv4DhAIPdy8eIIaXUa06KFnyUakha3ViFIKQdz/pub"); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
+        mWebView.loadUrl(MAINURL); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
 
 
         OkHttpClient client =HttpClient.get();
@@ -85,20 +71,30 @@ public class SignUpActivity extends Activity {
 
         final CheckBox checkBox2 = (CheckBox) findViewById(R.id.checkBox2) ;
 
-        findViewById(R.id.privacy).setOnClickListener(new View.OnClickListener() {
+
+        View.OnClickListener checklisten = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mWebView.loadUrl("https://docs.google.com/document/d/e/2PACX-1vQqsxIOuXVMMaQzqiRIYKjfJ15z4eUySQSufKVqLB6ZamYLMDOuI2-iftSHXoFHFTU0C2s1eceyuQAn/pub"); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
+                TextView b = (TextView) v;
+                if (b.getText().equals("보기")) {
+                    b.setText("숨기기");
+
+                   mWebView.loadUrl(
+                           b.getId()==R.id.privacy?
+                           "https://docs.google.com/document/d/e/2PACX-1vQqsxIOuXVMMaQzqiRIYKjfJ15z4eUySQSufKVqLB6ZamYLMDOuI2-iftSHXoFHFTU0C2s1eceyuQAn/pub":
+                                   "https://docs.google.com/document/d/e/2PACX-1vSM0Ani63nLRNgG8Ov_kk8L4Iw4-c2sdlevPitt5VSpPicmJekw7VJcc6i7F6F5mWNQbobUrnxJCIN2/pub"
+                           ); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
+                    mWebView.loadUrl(MAINURL); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
+
+                    b.setText("보기");
+
+                }
+
 
             }
-        });
-        findViewById(R.id.terms).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mWebView.loadUrl("https://docs.google.com/document/d/e/2PACX-1vSM0Ani63nLRNgG8Ov_kk8L4Iw4-c2sdlevPitt5VSpPicmJekw7VJcc6i7F6F5mWNQbobUrnxJCIN2/pub"); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
-
-            }
-        });
+        };
+        findViewById(R.id.privacy).setOnClickListener(checklisten);
+        findViewById(R.id.terms).setOnClickListener(checklisten);
         final Button button= (Button) findViewById(R.id.start_button);
         final CheckBox checkBox1 = (CheckBox) findViewById(R.id.checkBox1) ;
 

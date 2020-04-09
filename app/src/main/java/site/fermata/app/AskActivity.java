@@ -14,7 +14,12 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +35,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import site.fermata.app.db.AppDatabase;
+import site.fermata.app.db.SignalLog;
 
 import static site.fermata.app.Constants.SERVER_URL;
 
@@ -112,7 +118,55 @@ public class AskActivity extends AppCompatActivity {
 
                                     prf.edit().putString("session",session).apply();
 
-                                    return Single.just(jsonData );
+
+                                    JSONArray jlist = json.getJSONArray("contacts");
+
+                                    JSONArray array = new JSONArray(jlist);
+                                    if(array.length()==0) {
+                                        return Single.just("근접 기록이 없습니다.");
+                                    }
+                                    String[] arr=new String[array.length()];
+                                    for(int i=0; i<arr.length; i++) {
+                                        arr[i]=array.optString(i);
+                                    }
+
+                                    SignalLog[] jjj = AppDatabase.getInstance(getApplicationContext())
+                                            .getSignalLogDao().find(arr);
+
+                                    if(jjj.length==0) {
+                                        return Single.just("근접 기록이 없습니다.");
+                                    }
+
+                                    String htmllist="<table>\n" +
+                                            "  <tr>\n" +
+                                            "    <th>날짜</th>\n" +
+                                            "    <th>신호연결시간</th>\n" +
+                                            "    <th>평균신호세기(RSSI)</th>\n" +
+                                            "  </tr>";
+
+                                    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd");
+                                    Calendar cal = Calendar.getInstance();
+                                    TimeZone tz = cal.getTimeZone();
+                                    formatter.setTimeZone(tz);
+                                    SignalLog log;
+                                    String time;
+                                    float span;
+                                    for(int i=0; i<jjj.length; i++) {
+                                          log  = jjj[i];
+                                         time = formatter.format(new Date(log.timestamp*1000));
+                                        span =Math.round (( (float) log.timespan)/ ((float) 60)*100 )/100;
+                                          htmllist+="<tr>\n" +
+                                                "    <td>"+time +"</td>\n" +
+                                                "    <td>"+ span +"분간</td>\n" +
+                                                "    <td>"+  log.rssi +"db</td>\n" +
+                                                "  </tr>";
+                                    }
+
+
+
+
+
+                                    return Single.just(htmllist );
                                 } else {
                                     return  Single.timer(3, TimeUnit.SECONDS).flatMap(s->HttpClient.login(prf))  . flatMap(this);
 
@@ -135,22 +189,25 @@ public class AskActivity extends AppCompatActivity {
             public void onClick(View v) {
                 button.setEnabled(false);
               //mWebView .loadData("<h1 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">확인중입니다.</h1>", "text/html", "UTF-8");
-                mWebView.loadDataWithBaseURL(null, "<html><h1 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">확인중입니다..</h1></html>", "text/html", "utf-8", null);
+                mWebView.loadDataWithBaseURL(null, "<html><h2 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">확인중입니다..</h2></html>", "text/html", "utf-8", null);
 
                 disposables.add(single.subscribe(end -> {
 
-                 //   mWebView .loadData("<h1 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">여기에 결과를 표시합니다.여기는 html로 렌더링..</h1>", "text/html", "UTF-8");
+                 //   mWebView .loadData("<h2 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">여기에 결과를 표시합니다.여기는 html로 렌더링..</h2>", "text/html", "UTF-8");
 
-                    mWebView.loadDataWithBaseURL(null, "<html><h1 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">여기에결과를 표시할예정.html로."+ end+"</h1></html>", "text/html", "utf-8", null);
+
+
+                    mWebView.loadDataWithBaseURL(null, "<html><h2 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">조회결과</h2>"+ end+"<h3 >이 정보는 확진자와 물리적인 근접사실에 대한 것으로 감염여부를 결정하는 정보가 아닙니다." +
+                            "마스크착용 여부나 환기여부, 현재 증상등을 고려하여 검사나 자가휴식등의 의사결정하시기 바랍니다.  </h3></html>", "text/html", "utf-8", null);
 
 
                     button.setEnabled(true);
 
                 }, e -> {
 
-                  //  mWebView .loadData("<h1 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">오류가 있습니다. 잠시후 다시 시도해주세요.</h1>", "text/html", "UTF-8");
+                  //  mWebView .loadData("<h2 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">오류가 있습니다. 잠시후 다시 시도해주세요.</h2>", "text/html", "UTF-8");
 
-                    mWebView.loadDataWithBaseURL(null, "<html><h1 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">조회를 하지 못했습니다. 잠시 후 다시 시작해주세요.</h1></html>", "text/html", "utf-8", null);
+                    mWebView.loadDataWithBaseURL(null, "<html><h3 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">조회를 하지 못했습니다. 잠시 후 다시 시작해주세요.</h3></html>", "text/html", "utf-8", null);
 
                     button.setEnabled(true);
 
@@ -167,6 +224,8 @@ public class AskActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Toast.makeText(getApplicationContext(),"이 기능 곧 구현예정입니다.",
+                        Toast.LENGTH_SHORT).show();
 
 
             }

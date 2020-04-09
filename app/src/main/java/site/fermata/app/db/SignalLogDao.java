@@ -14,6 +14,19 @@ public interface SignalLogDao {
     @Query("SELECT * FROM signallog")
     List<SignalLog> getAllSignal();
 
+    @Query("UPDATE signallog SET timespan=:timespan  where uuid = :ID and timestamp= :timestamp")
+    void updateTimeSpan(String ID,int timestamp , int timespan );
+
+    @Query("SELECT DISTINCT uuid FROM signallog where uploaded = 0  and  timestamp <:ctime")
+    String[] getUUIDRecord(int ctime);
+
+
+    @Query("UPDATE signallog SET uploaded=1  where  timestamp< :timestamp")
+    void flagUploaded(int timestamp );
+
+
+    @Query("SELECT * FROM signallog WHERE uuid IN(:userIds)")
+    SignalLog[] find(String[] userIds);
 
     @Insert
     void insert(SignalLog... signallog);

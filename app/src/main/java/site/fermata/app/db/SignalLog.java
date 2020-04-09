@@ -22,10 +22,10 @@ public class SignalLog {
 
 
 
-    public SignalLog( String uuid , int rssi , boolean on, int timespan) {
+    public SignalLog( String uuid , int rssi , boolean on, int timespan, int timestamp) {
 
         this.uuid = uuid;
-        this.timestamp = (int)  (System.currentTimeMillis()/1000L )  ;
+        this.timestamp = timestamp  ;
         this.timespan= timespan;
         this.rssi= rssi;
         this.on=on;

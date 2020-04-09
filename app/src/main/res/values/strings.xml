@@ -1,19 +1,11 @@
 <resources>
     <string name="app_name">페르마타</string>
-    <string name="bt_not_enabled_leaving">User declined to enable Bluetooth, exiting Bluetooth Advertisements.</string>
+    <string name="bt_not_enabled_leaving">블루투스 기능이 없으면 시작할 수 없습니다.</string>
     <string name="activity_main_title">페르마타</string>
-    <string name="broadcast_device">Broadcast Device</string>
 
-    <string name="bt_not_supported">Bluetooth is not supported on this device.</string>
-    <string name="bt_ads_not_supported">Bluetooth Advertisements are not supported on this device.</string>
+    <string name="bt_not_supported">블루투스를 지원하지 않는 기기입니다.</string>
+    <string name="bt_ads_not_supported">본 기기는 블루투스 신호 발신기능이 없습니다.</string>
 
-    <string name="refresh">Refresh</string>
-    <string name="start_error_prefix">Start Advertising failed: </string>
-    <string name="start_error_already_started">already started.</string>
-    <string name="start_error_too_large">data packet exceeded 31 Byte limit.</string>
-    <string name="start_error_unsupported">not supported on this device.</string>
-    <string name="start_error_internal">internal error.</string>
-    <string name="start_error_too_many">too many advertisers.</string>
     <string name="bt_null">Error: Bluetooth object null</string>
     <string name="last_seen">Last Seen:</string>
     <string name="just_now">just now</string>
