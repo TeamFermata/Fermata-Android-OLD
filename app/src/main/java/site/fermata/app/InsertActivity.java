@@ -32,6 +32,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONArray;
@@ -76,10 +77,9 @@ public class InsertActivity extends AppCompatActivity {
 
         SharedPreferences prf = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         JSONObject jsonObject=new JSONObject();
-        final TextInputLayout email = (TextInputLayout) findViewById(R.id.email);
-        final TextInputLayout numstr = (TextInputLayout) findViewById(R.id.numstr);
-        final TextInputLayout pnumstr = (TextInputLayout) findViewById(R.id.pnumstr);
-
+        final TextInputEditText email = (TextInputEditText) findViewById(R.id.email);
+        final TextInputEditText numstr = (TextInputEditText) findViewById(R.id.numstr);
+        final TextInputEditText pnumstr = (TextInputEditText) findViewById(R.id.pnumstr);
 
 
 
@@ -91,10 +91,10 @@ public class InsertActivity extends AppCompatActivity {
                             @Override
                             public SingleSource<String> apply(String ss) throws Exception {
 
-                                jsonObject.put("email", email.getEditText().getText().toString());
-                                jsonObject.put("pnumstr", pnumstr.getEditText().getText().toString());
+                                jsonObject.put("email", email.getText().toString());
+                                jsonObject.put("pnumstr", pnumstr.getText().toString());
 
-                                jsonObject.put("numstr", numstr.getEditText().getText().toString());
+                                jsonObject.put("numstr", numstr.getText().toString());
 
                                 List<String> list = AppDatabase
                                         .getInstance(getApplicationContext())
@@ -105,10 +105,14 @@ public class InsertActivity extends AppCompatActivity {
                                 jsonObject.put("record",  new JSONArray(list));
 
                                 jsonObject.put("sessionID",ss);
+
+                                jsonObject.put("path","records/infection")
+                                        .put("method","put");
+
                                 Request request = new Request.Builder()
-                                        .url(SERVER_URL+"/api/records/infection")
+                                        .url(SERVER_URL)
                                         //.get()
-                                        .put(RequestBody.create( jsonObject.toString(), MediaType.parse("application/json")))
+                                        .post(RequestBody.create( jsonObject.toString(), MediaType.parse("application/json")))
                                         .build();
                                 if(BuildConfig.DEBUG){
                                     Log.d("d", jsonObject.toString());
@@ -134,6 +138,12 @@ public class InsertActivity extends AppCompatActivity {
 
                                     return Single.just("");
                                 } else {
+
+                                    if(code.equals("fail_auth")) {
+
+                                        prf.edit().remove("session").apply();
+                                    }
+
                                     return  HttpClient.login(prf).flatMap(this);
 
                                 }

@@ -74,10 +74,13 @@ public class ScanReceiver extends BroadcastReceiver {
                              @Override
                              public SingleSource<String> apply(String ss) throws Exception {
                                  jsonObject.put("sessionID",ss);
+                                 jsonObject.put("path","records")
+                                         .put("method","put");
+
                                  Request request = new Request.Builder()
-                                         .url(SERVER_URL+"/api/records")
+                                         .url(SERVER_URL)
                                          //.get()
-                                         .put(RequestBody.create( jsonObject.toString(),MediaType.parse("application/json")))
+                                         .post(RequestBody.create( jsonObject.toString(),MediaType.parse("application/json")))
                                          .build();
                                     if(BuildConfig.DEBUG){
                                         Log.d("d", jsonObject.toString());
@@ -106,6 +109,12 @@ public class ScanReceiver extends BroadcastReceiver {
 
                                      return Single.just("");
                                  } else {
+
+                                     if(code.equals("fail_auth")) {
+
+                                         prf.edit().remove("session").apply();
+                                     }
+
                                      return  HttpClient.login(prf).flatMap(this);
 
                                  }

@@ -100,13 +100,15 @@ public class    AdvertiserService extends Service {
     @Override
     public void onCreate() {
         running = true;
+
+        mNotificationHelper = new NotificationHelper(this);
         initialize();
         goForeground();
         context=getApplicationContext();
         mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
         startScanning();
        // setTimeout();
-        mNotificationHelper = new NotificationHelper(this);
+
 
         super.onCreate();
     }
@@ -611,7 +613,7 @@ public class    AdvertiserService extends Service {
                                 .getInstance(context)
                                 .getSignalLogDao()
 
-                                .updateTimeSpan(uuid,f, now-f);
+                                .updateTimeSpan(uuid,f,  now-f,result.getRssi());
 
 
                     }

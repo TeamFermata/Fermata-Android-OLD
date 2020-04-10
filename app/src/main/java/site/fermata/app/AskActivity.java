@@ -81,20 +81,20 @@ public class AskActivity extends AppCompatActivity {
                 .flatMap(
 
                         new Function<String, SingleSource<String>>() {
+
                             @Override
                             public SingleSource<String> apply(String ss) throws Exception {
 
-                                List<String> list = AppDatabase
-                                        .getInstance(getApplicationContext())
-                                        .getTempSignalDao()
-                                        .getAllSignal();
+
 
 
                                 jsonObject.put("myID",  prf.getString("id",""));
 
                                 jsonObject.put("sessionID",ss);
+                                jsonObject.put("path","records")
+                                .put("method","post");
                                 Request request = new Request.Builder()
-                                        .url(SERVER_URL+"/api/records")
+                                        .url(SERVER_URL)
                                         //.get()
                                         .post(RequestBody.create( jsonObject.toString(), MediaType.parse("application/json")))
                                         .build();
@@ -141,7 +141,7 @@ public class AskActivity extends AppCompatActivity {
                                             "  <tr>\n" +
                                             "    <th>날짜</th>\n" +
                                             "    <th>신호연결시간</th>\n" +
-                                            "    <th>평균신호세기(RSSI)</th>\n" +
+                                            "    <th>최대신호세기(RSSI)</th>\n" +
                                             "  </tr>";
 
                                     SimpleDateFormat formatter = new SimpleDateFormat("MM/dd");
@@ -158,7 +158,7 @@ public class AskActivity extends AppCompatActivity {
                                           htmllist+="<tr>\n" +
                                                 "    <td>"+time +"</td>\n" +
                                                 "    <td>"+ span +"분간</td>\n" +
-                                                "    <td>"+  log.rssi +"db</td>\n" +
+                                                "    <td>"+  log.rssi +"dBm</td>\n" +
                                                 "  </tr>";
                                     }
 
@@ -168,6 +168,12 @@ public class AskActivity extends AppCompatActivity {
 
                                     return Single.just(htmllist );
                                 } else {
+
+                                    if(code.equals("fail_auth")) {
+
+                                        prf.edit().remove("session").apply();
+                                    }
+
                                     return  Single.timer(3, TimeUnit.SECONDS).flatMap(s->HttpClient.login(prf))  . flatMap(this);
 
                                 }
@@ -178,7 +184,7 @@ public class AskActivity extends AppCompatActivity {
                 ) .subscribeOn(Schedulers.io())
 
 
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread()).timeout(20,TimeUnit.SECONDS);
 
 
 

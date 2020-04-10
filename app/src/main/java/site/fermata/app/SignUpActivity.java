@@ -23,6 +23,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.UUID;
 
@@ -121,13 +123,18 @@ public class SignUpActivity extends Activity {
 
                 try{
 
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("path","user")
+                            .put("method","put")
+                            .put("id",  id)
+                            .put("password", key);
 
 
                     Request request = new Request.Builder()
                             //.addHeader("x-api-key", RestTestCommon.API_KEY)
-                           .url(SERVER_URL+"/api/user")
+                           .url(SERVER_URL)
                             //.get()
-                            .put(RequestBody.create(MediaType.parse("application/json"),    String.format("{\"id\":\"%s\",\"pw\":\"%s\"}", id,key)))
+                            .post(RequestBody.create( jsonObject.toString(),MediaType.parse("application/json")  ))
                             .build();
 
                     //비동기 처리 (enqueue 사용)

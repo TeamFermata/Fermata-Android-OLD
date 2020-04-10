@@ -14,8 +14,10 @@ public interface SignalLogDao {
     @Query("SELECT * FROM signallog")
     List<SignalLog> getAllSignal();
 
-    @Query("UPDATE signallog SET timespan=:timespan  where uuid = :ID and timestamp= :timestamp")
-    void updateTimeSpan(String ID,int timestamp , int timespan );
+    @Query("UPDATE signallog SET timespan=:timespan , rssi=MAX(rssi,:newrssi) where uuid = :ID and timestamp= :timestamp")
+    void updateTimeSpan(String ID,int timestamp , int timespan , int newrssi );
+
+
 
     @Query("SELECT DISTINCT uuid FROM signallog where uploaded = 0  and  timestamp <:ctime")
     String[] getUUIDRecord(int ctime);

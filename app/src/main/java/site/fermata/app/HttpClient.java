@@ -47,14 +47,21 @@ public class HttpClient {
                 String  session;
 
 
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("path","user")
+                        .put("method","post")
 
+                .put("id",  prf.getString("id",""))
+                        .put("password", prf.getString("key",""));
 
 
                 Request request = new Request.Builder()
                         //.addHeader("x-api-key", RestTestCommon.API_KEY)
-                        .url(SERVER_URL+"/api/user")
+                        .url(SERVER_URL)
                         //.get()
-                        .post(RequestBody.create(MediaType.parse("application/json"),    String.format("{\"id\":\"%s\",\"pw\":\"%s\"}", prf.getString("id",""),prf.getString("key",""))))
+                        .post(RequestBody.create(jsonObject.toString(),MediaType.parse("application/json")
+
+                                 ))
                         .build();
 
 

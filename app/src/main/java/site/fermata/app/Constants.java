@@ -42,6 +42,6 @@ public class Constants {
 
     //public  static  final  String SERVER_URL="https://fermataserver.herokuapp.com";
 
-    public  static  final  String SERVER_URL="https://api.fermata.site";
+    public  static  final  String SERVER_URL="https://nopd4pibsh.apigw.ntruss.com/API/prod/rivykMwR3e/json";
 
 }
