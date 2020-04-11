@@ -76,14 +76,15 @@ public class HttpClient {
                     session= json.getString("sessionID");
 
                     prf.edit().putString("session",session).apply();
+                    emitter.onSuccess(session);
 
 
                 } else {
+                   emitter.onError(new Exception());
 
-                    throw new Exception();
+                   //  throw ;
                 }
 
-                emitter.onSuccess(session);
 
             }
         });

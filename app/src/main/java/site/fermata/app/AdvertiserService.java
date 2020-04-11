@@ -595,13 +595,16 @@ public class    AdvertiserService extends Service {
 
             String uuid=bytesToHex(signal);
             Integer h = cachedUUID.get(uuid);
+
+        if(h==null) {
+
+            cachedUUID.put(uuid,now);
+        } else
+
             if( now> h+ 60*60 ) {
                 //cachedUUID.remove(uuid);
                 cachedUUID.remove(uuid);
-            } else if(h==null) {
-
-                cachedUUID.put(uuid,now);
-            } else if(h<0){
+            } else  if(h<0){
                 int f=-h;
 
                 new Thread(new Runnable() {
