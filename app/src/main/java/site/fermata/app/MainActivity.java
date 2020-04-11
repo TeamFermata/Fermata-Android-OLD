@@ -27,6 +27,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -44,6 +46,9 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
+import site.fermata.app.db.AppDatabase;
+
+import static site.fermata.app.Constants.CHECH_MINSEC;
 
 
 /**
@@ -59,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        super.onCreate(savedInstanceState);
+
 
 
         SharedPreferences prf = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -68,8 +73,7 @@ public class MainActivity extends AppCompatActivity {
         if(prf.contains("id")&&prf.contains("key")   ) {
 
 
-
-
+            setTheme(R.style.AppTheme);
 
 
         } else {
@@ -82,7 +86,10 @@ public class MainActivity extends AppCompatActivity {
             return ;
         }
 
-
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        setTitle(R.string.activity_main_title);
 
         if (savedInstanceState == null) {
 
@@ -123,11 +130,10 @@ public class MainActivity extends AppCompatActivity {
                 toast(R.string.bt_not_supported);
                 finish();
             }
+
         }
 
 
-        setContentView(R.layout.activity_main);
-        setTitle(R.string.activity_main_title);
 
         findViewById(R.id.query_btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +154,39 @@ public class MainActivity extends AppCompatActivity {
                 startService(new Intent(MainActivity.this,AdvertiserService.class));
             }
         });
+        ( (Button) findViewById(R.id.send_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+
+                        AppDatabase instance = AppDatabase
+                                .getInstance(getApplicationContext());
+
+
+
+
+                        int now= (int) (System.currentTimeMillis()/1000);
+
+                        String[] records =instance.getSignalLogDao().getUUIDRecord(now-CHECH_MINSEC);
+
+                        if(records!=null& records.length>0){
+
+                            getApplicationContext().sendBroadcast(new Intent(  getApplicationContext() , ScanReceiver.class).putExtra("uuid",records)
+                                    .putExtra("time",now));
+
+
+                        }
+
+
+
+                    }
+                }) .start() ;
+            }
+        });
 
     }
 

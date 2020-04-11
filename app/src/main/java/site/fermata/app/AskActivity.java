@@ -98,10 +98,7 @@ public class AskActivity extends AppCompatActivity {
                                         //.get()
                                         .post(RequestBody.create( jsonObject.toString(), MediaType.parse("application/json")))
                                         .build();
-                                if(BuildConfig.DEBUG){
-                                    Log.d("d", jsonObject.toString());
 
-                                }
 
                                 Response responses = HttpClient.get().newCall(request).execute();
                                 if(responses.code()!=200){
@@ -181,10 +178,10 @@ public class AskActivity extends AppCompatActivity {
                             }
                         }
 
-                ) .subscribeOn(Schedulers.io())
+                ) .timeout(20,TimeUnit.SECONDS).subscribeOn(Schedulers.io())
 
 
-                .observeOn(AndroidSchedulers.mainThread()).timeout(20,TimeUnit.SECONDS);
+                .observeOn(AndroidSchedulers.mainThread());
 
 
 

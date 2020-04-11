@@ -601,7 +601,7 @@ public class    AdvertiserService extends Service {
             cachedUUID.put(uuid,now);
         } else
 
-            if( now> h+ 60*60 ) {
+            if( now> Math.abs(h)+ 60*60 ) {
                 //cachedUUID.remove(uuid);
                 cachedUUID.remove(uuid);
             } else  if(h<0){
