@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:text="보기" />
+            android:text="전체 보기" />
     </LinearLayout>
 
     <LinearLayout
@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:text="보기" />
+            android:text="전체 보기" />
     </LinearLayout>
 
     <Button
@@ -83,7 +83,7 @@
         android:layout_x="185dp"
         android:layout_y="702dp"
         android:enabled="false"
-        android:text="@string/register_start"
+        android:text="동의하고 시작하기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
