@@ -75,7 +75,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/manual_btn"
+        android:id="@+id/insert_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_x="185dp"
