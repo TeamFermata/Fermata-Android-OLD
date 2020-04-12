@@ -7,68 +7,198 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="64dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 
-        <TextView
-            android:id="@+id/textView"
+        <ImageView
+            android:id="@+id/imageView_top"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="190dp"
+            android:src="@drawable/sample"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </ImageView>
 
-            android:layout_gravity="center_horizontal"
-            android:text="접촉여부가 궁금하신가요?" />
-
-        <Button
-            android:id="@+id/query_btn"
+        <LinearLayout
+            app:layout_constraintEnd_toStartOf="@id/imageView_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageView_top"
+            app:layout_constraintBottom_toTopOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="접촉정보조회" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+           >
+            <LinearLayout
+                app:layout_constraintEnd_toStartOf="@id/imageView_top"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageView_top"
+                app:layout_constraintBottom_toTopOf="parent"
+                android:layout_width="0dp"
+                android:layout_weight=".50"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight=".60"
+                    tools:layout_editor_absoluteX="1dp"
+                    tools:layout_editor_absoluteY="1dp">
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/search_48px" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="29dp" />
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_below="@id/imageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:text="접촉 정보 조회" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+                    <TextView
+                        android:id="@+id/textView1_sub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/textView1"
+                        android:gravity="center"
+                        android:layout_centerHorizontal="true"
+                        android:text="접촉여부가 궁금하신가요?" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:background="#dbdbdb"
+                    android:layout_height="0dp"
+                    android:layout_weight=".40"
+                    tools:layout_editor_absoluteX="1dp"
+                    tools:layout_editor_absoluteY="1dp">
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/question_mark_48px" />
 
-            android:layout_gravity="center_horizontal"
-            android:text="확진판정을 받으셨나요? 당신의 작은 행동이 수백명의 생명을 살리고, 바이러스를 차단하는데 도움을 줄수 있습니다." />
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_below="@id/imageView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:text="앱 사용법" />
 
-        <Button
-            android:id="@+id/insert_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                    <TextView
+                        android:id="@+id/textView2_sub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/textView2"
+                        android:gravity="center"
+                        android:layout_centerHorizontal="true"
+                        android:text="앱 사용법이 궁금하신가요?" />
+                </RelativeLayout>
 
-            android:layout_gravity="center_horizontal"
-            android:text="확진시 알림공유방법 알아보기" />
+            </LinearLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="75dp" />
+            <LinearLayout
+                app:layout_constraintEnd_toStartOf="@id/imageView_top"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageView_top"
+                app:layout_constraintBottom_toTopOf="parent"
+                android:layout_width="0dp"
+                android:layout_weight=".50"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:background="#dbdbdb"
+                    android:layout_height="0dp"
+                    android:layout_weight=".60"
+                    tools:layout_editor_absoluteX="1dp"
+                    tools:layout_editor_absoluteY="1dp">
 
-        <Button
-            android:id="@+id/send_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/meeting_48px" />
 
-            android:layout_gravity="center_horizontal"
-            android:text="접촉자 정보 전송(테스트)" />
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_below="@id/imageView3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:text="확진 여부 등록" />
 
-        <Button
-            android:id="@+id/new_signal_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                    <TextView
+                        android:id="@+id/textView3_sub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/textView3"
+                        android:gravity="center"
+                        android:layout_centerHorizontal="true"
+                        android:text="확진 판정을 받으셨나요?" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight=".40"
+                    tools:layout_editor_absoluteX="1dp"
+                    tools:layout_editor_absoluteY="1dp">
 
-            android:layout_gravity="center_horizontal"
-            android:text="새시그널생성(테스트용)" />
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/user_manual_48px" />
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_below="@id/imageView4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:text="운영방식" />
+
+                    <TextView
+                        android:id="@+id/textView4_sub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/textView4"
+                        android:gravity="center"
+                        android:layout_centerHorizontal="true"
+                        android:text="서비스 운영방식이 궁금하신가요?" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
