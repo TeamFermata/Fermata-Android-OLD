@@ -124,7 +124,7 @@ public class ScanReceiver extends BroadcastReceiver {
                              }
                          }
 
-                         ) .timeout(10, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
+                         ) .timeout(12, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
                  .observeOn(AndroidSchedulers.mainThread())
 
                   .  subscribe(new SingleObserver<String>() {

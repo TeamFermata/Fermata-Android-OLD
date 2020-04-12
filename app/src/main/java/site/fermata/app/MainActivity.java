@@ -135,6 +135,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        findViewById(R.id.about_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toast("준비중입니다.");
+            }
+        });
+        findViewById(R.id.manual_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                toast("준비중입니다.");
+                //Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+                //startActivity(browserIntent);
+            }
+        });
+
 
         findViewById(R.id.query_btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ( (Button) findViewById(R.id.new_signal_button)).setOnClickListener(new View.OnClickListener() {
+     /*   ( (Button) findViewById(R.id.new_signal_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startService(new Intent(MainActivity.this,AdvertiserService.class));
@@ -189,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }) .start() ;
             }
-        });
+        });*/
 
     }
 
