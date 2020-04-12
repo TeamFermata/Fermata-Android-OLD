@@ -111,9 +111,7 @@ public class ScanReceiver extends BroadcastReceiver {
 
                                          prf.edit().remove("session").apply();
                                      }
-                                     if(IS_BETA)  {
-                                         Toast.makeText(context,"저장실패,재시도",Toast.LENGTH_LONG).show();
-                                     }
+
                                      return  Single.timer(3, TimeUnit.SECONDS).flatMap(s->HttpClient.checkAuth(prf,context)) .flatMap(this);
 
                                  }
@@ -143,6 +141,11 @@ public class ScanReceiver extends BroadcastReceiver {
                 @Override
                 public void onError(Throwable e) {
                     Log.d("Scanreciver:err" ,e.toString());
+
+                    if(IS_BETA)  {
+                        Toast.makeText(context,"저장실패,재시도",Toast.LENGTH_LONG).show();
+                    }
+
                     p.finish();
                 }
             });
