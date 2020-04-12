@@ -47,6 +47,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static site.fermata.app.Constants.CHECH_MINSEC;
+import static site.fermata.app.Constants.IS_BETA;
 import static site.fermata.app.Constants.Service_UUID;
 
 
@@ -645,7 +646,7 @@ public class    AdvertiserService extends Service {
                 }) .start() ;
 
 
-                if(true ||BuildConfig.DEBUG ) {
+                if(IS_BETA ||BuildConfig.DEBUG ) {
 
 
 

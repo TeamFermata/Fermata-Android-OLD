@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
+import android.widget.Toast;
 
 
 import org.json.JSONArray;
@@ -30,6 +31,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import site.fermata.app.db.AppDatabase;
 
+import static site.fermata.app.Constants.IS_BETA;
 import static site.fermata.app.Constants.PREF_ID;
 import static site.fermata.app.Constants.SERVER_URL;
 
@@ -109,7 +111,9 @@ public class ScanReceiver extends BroadcastReceiver {
 
                                          prf.edit().remove("session").apply();
                                      }
-
+                                     if(IS_BETA)  {
+                                         Toast.makeText(context,"저장실패,재시도",Toast.LENGTH_LONG).show();
+                                     }
                                      return  Single.timer(3, TimeUnit.SECONDS).flatMap(s->HttpClient.checkAuth(prf,context)) .flatMap(this);
 
                                  }
@@ -129,6 +133,10 @@ public class ScanReceiver extends BroadcastReceiver {
                 public void onSuccess(String s)
 
                 {
+
+                if(IS_BETA)  {
+                    Toast.makeText(context,"저장성공",Toast.LENGTH_LONG).show();
+                }
                     p.finish();
                 }
 
