@@ -3,6 +3,8 @@ package site.fermata.app;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -83,17 +85,31 @@ public class HttpClient {
                     emitter.onSuccess(session);
 
                 }else if(code.equals("fail_not_found")||code.equals("fail_invalidpw")){
-                    Toast.makeText(context,"사용자 정보를 확인하지 못했습니다. 다시 시작합니다.",
-                            Toast.LENGTH_SHORT).show();
 
-                    Intent i = new Intent( context, SignUpActivity.class);
+                    emitter.onError(new Exception());
 
-                    context. startActivity(i);
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context,"사용자 정보를 확인하지 못했습니다. 다시 시작합니다.",
+                                    Toast.LENGTH_SHORT).show();
+
+                            Intent i = new Intent( context, SignUpActivity.class);
+
+                            context. startActivity(i);
+                        }
+                    });
 
                 } else {
                    emitter.onError(new Exception());
-                    Toast.makeText(context,"사용자 정보를 확인하지 못했습니다. 잠시 후 다시 시도해주세요",
-                            Toast.LENGTH_SHORT).show();
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context,"사용자 정보를 확인하지 못했습니다. 잠시 후 다시 시도해주세요",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                     //
                     //  throw ;
                 }
