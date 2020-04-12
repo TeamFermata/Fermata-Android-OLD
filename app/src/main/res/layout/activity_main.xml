@@ -128,7 +128,7 @@
                         android:layout_height="match_parent"
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
-                        android:text="앱 사용법"
+                        android:text="앱 소개 및 사용법"
                         android:textSize="18sp" />
 
                 </RelativeLayout>
@@ -202,7 +202,7 @@
                         android:layout_height="match_parent"
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
-                        android:text="개발/운영진"
+                        android:text="베타테스트참여\n(테스트 방법)"
                         android:textSize="18sp" />
 
                 </RelativeLayout>

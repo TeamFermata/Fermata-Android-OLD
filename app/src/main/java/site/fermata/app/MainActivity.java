@@ -29,6 +29,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -138,16 +139,19 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.about_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toast("준비중입니다.");
+              //  toast("준비중입니다.");
+
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.google.com/document/d/e/2PACX-1vRGkT3zMdFgbWyWiT2rwetUEBSpdmFzdXr1lJGsvjGNDKGbHLfKY0JKZ4IBcGtlHewhBXltI4H3Sb_K/pub"));
+                startActivity(browserIntent);
             }
         });
         findViewById(R.id.manual_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                toast("준비중입니다.");
-                //Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
-                //startActivity(browserIntent);
+              //  toast("준비중입니다.");
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.google.com/document/d/e/2PACX-1vTfQh5JtNy3469U_ciL6tcmrs2Gb8cd1EeB-Z92K27qArun9Bm9_so8_g-a51vr5pEGJfCx96zwXNub/pub"));
+                startActivity(browserIntent);
             }
         });
 
