@@ -132,7 +132,7 @@ public class InsertActivity extends AppCompatActivity {
                                         prf.edit().remove("session").apply();
                                     }
 
-                                    return  HttpClient.checkAuth(prf,getApplicationContext()).flatMap(this);
+                                    return  Single.timer(3, TimeUnit.SECONDS).flatMap(s->HttpClient.checkAuth(prf,getApplicationContext())) .flatMap(this);
 
                                 }
 

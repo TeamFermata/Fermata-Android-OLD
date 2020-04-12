@@ -180,6 +180,8 @@ public class MainActivity extends AppCompatActivity {
                                     .putExtra("time",now));
 
 
+                        } else {
+                            toast("전송할 로그가 없습니다. 다른 기기에 설치해서 신호를 주고 받아야 저장됩니다.");
                         }
 
 
