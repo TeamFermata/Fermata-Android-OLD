@@ -21,6 +21,7 @@ import androidx.preference.PreferenceManager;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.SingleSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -110,9 +111,13 @@ public class ScanReceiver extends BroadcastReceiver {
                                      if(code.equals("fail_auth")) {
 
                                          prf.edit().remove("session").apply();
+                                         return  Single.timer(3, TimeUnit.SECONDS).flatMap(s->HttpClient.checkAuth(prf,context)) .flatMap(this);
+
+                                     } else {
+
+                                         return Single.error(new Exception(code));
                                      }
 
-                                     return  Single.timer(3, TimeUnit.SECONDS).flatMap(s->HttpClient.checkAuth(prf,context)) .flatMap(this);
 
                                  }
 
@@ -120,6 +125,7 @@ public class ScanReceiver extends BroadcastReceiver {
                          }
 
                          ) .timeout(10, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
+                 .observeOn(AndroidSchedulers.mainThread())
 
                   .  subscribe(new SingleObserver<String>() {
                 @Override

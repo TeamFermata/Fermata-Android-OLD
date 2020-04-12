@@ -82,11 +82,11 @@ public class HttpClient {
                     session = json.getString("sessionID");
 
                     prf.edit().putString("session", session).apply();
-                    emitter.onSuccess(session);
+                 if(!emitter.isDisposed())   emitter.onSuccess(session);
 
                 }else if(code.equals("fail_not_found")||code.equals("fail_invalidpw")){
 
-                    emitter.onError(new Exception());
+                    if(!emitter.isDisposed())  emitter.onError(new Exception());
 
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -101,7 +101,7 @@ public class HttpClient {
                     });
 
                 } else {
-                   emitter.onError(new Exception());
+                    if(!emitter.isDisposed())  emitter.onError(new Exception());
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
