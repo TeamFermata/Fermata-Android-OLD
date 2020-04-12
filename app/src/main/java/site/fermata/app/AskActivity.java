@@ -2,7 +2,6 @@ package site.fermata.app;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -14,11 +13,9 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -37,6 +34,7 @@ import okhttp3.Response;
 import site.fermata.app.db.AppDatabase;
 import site.fermata.app.db.SignalLog;
 
+import static site.fermata.app.Constants.PREF_ID;
 import static site.fermata.app.Constants.SERVER_URL;
 
 public class AskActivity extends AppCompatActivity {
@@ -76,7 +74,7 @@ public class AskActivity extends AppCompatActivity {
 
 
 
-        Single single=  HttpClient.login(prf)
+        Single single=  HttpClient.checkAuth(prf,getApplicationContext())
 
                 .flatMap(
 
@@ -88,7 +86,7 @@ public class AskActivity extends AppCompatActivity {
 
 
 
-                                jsonObject.put("myID",  prf.getString("id",""));
+                                jsonObject.put("myID",  prf.getString(PREF_ID,""));
 
                                 jsonObject.put("sessionID",ss);
                                 jsonObject.put("path","records")
@@ -171,7 +169,7 @@ public class AskActivity extends AppCompatActivity {
                                         prf.edit().remove("session").apply();
                                     }
 
-                                    return  Single.timer(3, TimeUnit.SECONDS).flatMap(s->HttpClient.login(prf))  . flatMap(this);
+                                    return  Single.timer(3, TimeUnit.SECONDS).flatMap(s->HttpClient.checkAuth(prf,getApplicationContext()))  . flatMap(this);
 
                                 }
 

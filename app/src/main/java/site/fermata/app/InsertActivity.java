@@ -2,24 +2,17 @@ package site.fermata.app;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
-import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
-import io.reactivex.SingleOnSubscribe;
 import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.internal.observers.ConsumerSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import site.fermata.app.db.AppDatabase;
-import site.fermata.app.db.TempSignal;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -33,15 +26,10 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -83,7 +71,7 @@ public class InsertActivity extends AppCompatActivity {
 
 
 
-        Single single=  HttpClient.login(prf)
+        Single single=  HttpClient.checkAuth(prf,getApplicationContext())
 
                 .flatMap(
 
@@ -144,14 +132,14 @@ public class InsertActivity extends AppCompatActivity {
                                         prf.edit().remove("session").apply();
                                     }
 
-                                    return  HttpClient.login(prf).flatMap(this);
+                                    return  HttpClient.checkAuth(prf,getApplicationContext()).flatMap(this);
 
                                 }
 
                             }
                         }
 
-                ) .subscribeOn(Schedulers.io())
+                ) .timeout(20,TimeUnit.SECONDS).subscribeOn(Schedulers.io())
 
 
                 .observeOn(AndroidSchedulers.mainThread());

@@ -49,6 +49,7 @@ import androidx.preference.PreferenceManager;
 import site.fermata.app.db.AppDatabase;
 
 import static site.fermata.app.Constants.CHECH_MINSEC;
+import static site.fermata.app.Constants.PREF_ID;
 
 
 /**
@@ -70,14 +71,14 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prf = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 
-        if(prf.contains("id")&&prf.contains("key")   ) {
+        if(prf.contains(PREF_ID)&&prf.contains("key")   ) {
 
 
             setTheme(R.style.AppTheme);
 
-
+            super.onCreate(savedInstanceState);
         } else {
-
+            super.onCreate(savedInstanceState);
             Intent i = new Intent( this, SignUpActivity.class);
             finish();  //Kill the activity from which you will go to next activity
             startActivity(i);
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             return ;
         }
 
-        super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         setTitle(R.string.activity_main_title);

@@ -62,6 +62,7 @@
         android:id="@+id/send_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_marginBottom="124dp"
         android:text="접촉자 정보 전송"
         app:layout_constraintBottom_toBottomOf="parent"

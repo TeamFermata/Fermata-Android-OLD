@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.UUID;
 
+import static site.fermata.app.Constants.PREF_ID;
 import static site.fermata.app.Constants.SERVER_URL;
 import static site.fermata.app.PasswordGenerator.generateRandomPassword;
 
@@ -161,7 +162,7 @@ public class SignUpActivity extends Activity {
 
 
                             SharedPreferences prf = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                            prf.edit().putString("id",id).putString("key",key).putString("session","dsfdsdfs").commit();
+                            prf.edit().putString(PREF_ID,id).putString("key",key).putString("session","dsfdsdfs").commit();
                             Intent i = new Intent( SignUpActivity.this, MainActivity.class);
                             finish();  //Kill the activity from which you will go to next activity
                             startActivity(i);

@@ -14,15 +14,11 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import androidx.preference.PreferenceManager;
-import io.reactivex.Flowable;
 import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
 import io.reactivex.SingleObserver;
-import io.reactivex.SingleOnSubscribe;
 import io.reactivex.SingleSource;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
@@ -33,9 +29,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import site.fermata.app.db.AppDatabase;
-import site.fermata.app.db.TempSignal;
 
-import static site.fermata.app.Constants.ACTION_RERUN;
+import static site.fermata.app.Constants.PREF_ID;
 import static site.fermata.app.Constants.SERVER_URL;
 
 public class ScanReceiver extends BroadcastReceiver {
@@ -57,7 +52,7 @@ public class ScanReceiver extends BroadcastReceiver {
             JSONObject jsonObject=new JSONObject();
             try {
 
-                jsonObject.put("myID", prf.getString("id",""));
+                jsonObject.put("myID", prf.getString(PREF_ID,""));
                 jsonObject.put("record",  new JSONArray(uuid));
 
             } catch (Exception e){
@@ -66,7 +61,7 @@ public class ScanReceiver extends BroadcastReceiver {
 
 
 
-         HttpClient.login(prf)
+         HttpClient.checkAuth(prf,context)
 
                  .flatMap(
 
@@ -115,14 +110,14 @@ public class ScanReceiver extends BroadcastReceiver {
                                          prf.edit().remove("session").apply();
                                      }
 
-                                     return  HttpClient.login(prf).flatMap(this);
+                                     return  HttpClient.checkAuth(prf,context).flatMap(this);
 
                                  }
 
                              }
                          }
 
-                         ) .subscribeOn(Schedulers.io())
+                         ) .timeout(10, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
 
                   .  subscribe(new SingleObserver<String>() {
                 @Override

@@ -24,7 +24,7 @@ import android.os.ParcelUuid;
 public class Constants {
 
 
-
+    public static final String PREF_ID = "ID_beta";
 
     public static final String ACTION_RERUN = "site.fermata.app.RERUN";
 

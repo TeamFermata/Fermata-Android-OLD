@@ -1,6 +1,9 @@
 package site.fermata.app;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -14,6 +17,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 
+import static site.fermata.app.Constants.PREF_ID;
 import static site.fermata.app.Constants.SERVER_URL;
 
 public class HttpClient {
@@ -37,7 +41,7 @@ public class HttpClient {
         return client;
     }
 
-    public static  Single login(SharedPreferences prf) {
+    public static  Single checkAuth(SharedPreferences prf, Context context) {
 
         return prf.contains("session")?  Single.just(prf.getString("session","")) :Single.create(new SingleOnSubscribe<String>() {
 
@@ -51,7 +55,7 @@ public class HttpClient {
                 jsonObject.put("path","user")
                         .put("method","post")
 
-                .put("id",  prf.getString("id",""))
+                .put("id",  prf.getString(PREF_ID,""))
                         .put("password", prf.getString("key",""));
 
 
@@ -73,16 +77,25 @@ public class HttpClient {
                 String code= json.getString("code");
                 if(code.equals("success")) {
 
-                    session= json.getString("sessionID");
+                    session = json.getString("sessionID");
 
-                    prf.edit().putString("session",session).apply();
+                    prf.edit().putString("session", session).apply();
                     emitter.onSuccess(session);
 
+                }else if(code.equals("fail_not_found")||code.equals("fail_invalidpw")){
+                    Toast.makeText(context,"사용자 정보를 확인하지 못했습니다. 다시 시작합니다.",
+                            Toast.LENGTH_SHORT).show();
+
+                    Intent i = new Intent( context, SignUpActivity.class);
+
+                    context. startActivity(i);
 
                 } else {
                    emitter.onError(new Exception());
-
-                   //  throw ;
+                    Toast.makeText(context,"사용자 정보를 확인하지 못했습니다. 잠시 후 다시 시도해주세요",
+                            Toast.LENGTH_SHORT).show();
+                    //
+                    //  throw ;
                 }
 
 
