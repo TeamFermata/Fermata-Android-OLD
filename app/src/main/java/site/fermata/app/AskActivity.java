@@ -45,7 +45,7 @@ public class AskActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_query);
-        setTitle("접촉정보 조회");
+        setTitle("근접기록정보 조회");
 
         WebView mWebView = (WebView) findViewById(R.id.webViewquery);
 
@@ -89,7 +89,7 @@ public class AskActivity extends AppCompatActivity {
                                 jsonObject.put("myID",  prf.getString(PREF_ID,""));
 
                                 jsonObject.put("sessionID",ss);
-                                jsonObject.put("path","records")
+                                jsonObject.put("path","record")
                                 .put("method","post");
                                 Request request = new Request.Builder()
                                         .url(SERVER_URL)
@@ -109,14 +109,14 @@ public class AskActivity extends AppCompatActivity {
                                 String code= json.getString("code");
                                 if(code.equals("success")) {
 
-                                    String session= json.getString("sessionID");
+                                    String session= json.getString("newSessionID");
 
                                     prf.edit().putString("session",session).apply();
 
 
-                                    JSONArray jlist = json.getJSONArray("contacts");
+                                    JSONArray array = json.getJSONArray("contacts");
 
-                                    JSONArray array = new JSONArray(jlist);
+                                 //   JSONArray array = new JSONArray(jlist);
                                     if(array.length()==0) {
                                         return Single.just("근접 기록이 없습니다.");
                                     }
@@ -176,7 +176,7 @@ public class AskActivity extends AppCompatActivity {
                             }
                         }
 
-                ) .timeout(20,TimeUnit.SECONDS).subscribeOn(Schedulers.io())
+                ) .timeout(30,TimeUnit.SECONDS).subscribeOn(Schedulers.io())
 
 
                 .observeOn(AndroidSchedulers.mainThread());

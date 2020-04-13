@@ -72,8 +72,8 @@ public class ScanReceiver extends BroadcastReceiver {
                              @Override
                              public SingleSource<String> apply(String ss) throws Exception {
                                  jsonObject.put("sessionID",ss);
-                                 jsonObject.put("path","records")
-                                         .put("method","put");
+                                 jsonObject.put("path","record")
+                                         .put("method","PUT");
 
                                  Request request = new Request.Builder()
                                          .url(SERVER_URL)
@@ -93,7 +93,7 @@ public class ScanReceiver extends BroadcastReceiver {
                                  String code= json.getString("code");
                                  if(code.equals("success")) {
 
-                                     String session= json.getString("sessionID");
+                                     String session= json.getString("newSessionID");
 
                                      prf.edit().putString("session",session).apply();
 

@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
@@ -33,11 +35,16 @@ public class HttpClient {
         if(BuildConfig.DEBUG) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-            client = new OkHttpClient.Builder()
+            client = new OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
                     .addInterceptor(logging)
                     .build();
         } else {
-            client = new OkHttpClient();
+            client = new OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+            .build();
         }
 
         return client;

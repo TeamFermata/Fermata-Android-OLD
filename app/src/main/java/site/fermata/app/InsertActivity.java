@@ -120,11 +120,11 @@ public class InsertActivity extends AppCompatActivity {
                                 String code= json.getString("code");
                                 if(code.equals("success")) {
 
-                                    String session= json.getString("sessionID");
+                                    String session= json.getString("newSessionID");
 
                                     prf.edit().putString("session",session).apply();
 
-                                    return Single.just("");
+                                      return Single.just("");
                                 } else {
 
                                     if(code.equals("fail_auth")) {
@@ -132,14 +132,14 @@ public class InsertActivity extends AppCompatActivity {
                                         prf.edit().remove("session").apply();
                                     }
 
-                                    return  Single.timer(3, TimeUnit.SECONDS).flatMap(s->HttpClient.checkAuth(prf,getApplicationContext())) .flatMap(this);
+                                    return  (disposables.isDisposed())?Single.never(): Single.timer(3, TimeUnit.SECONDS).flatMap(s->HttpClient.checkAuth(prf,getApplicationContext())) .flatMap(this);
 
                                 }
 
                             }
                         }
 
-                ) .timeout(20,TimeUnit.SECONDS).subscribeOn(Schedulers.io())
+                ) .timeout(50,TimeUnit.SECONDS).subscribeOn(Schedulers.io())
 
 
                 .observeOn(AndroidSchedulers.mainThread());

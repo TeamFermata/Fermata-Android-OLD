@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="정상적으로 동작하고 있습니다.\n{현재는 베타테스트 기간으로\n기능 테스트용으로 사용해주세요)"
+                android:text="정상적으로 동작하고 있습니다.\n(현재는 베타테스트 기간으로\n기능 테스트용으로 사용해주세요)"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView_top"
                 app:layout_constraintTop_toTopOf="@+id/imageView_top"
