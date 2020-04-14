@@ -132,9 +132,9 @@ public class AskActivity extends AppCompatActivity {
                                         return Single.just("근접 기록이 없습니다.");
                                     }
 
-                                    String htmllist="<table>\n" +
+                                    String htmllist="<table width='100%'>\n" +
                                             "  <tr>\n" +
-                                            "    <th>날짜</th>\n" +
+                                            "    <th>날짜(월/일)</th>\n" +
                                             "    <th>신호연결시간</th>\n" +
                                             "    <th>최대신호세기(RSSI)</th>\n" +
                                             "  </tr>";
@@ -156,7 +156,7 @@ public class AskActivity extends AppCompatActivity {
                                                 "    <td>"+  log.rssi +"dBm</td>\n" +
                                                 "  </tr>";
                                     }
-
+                                    htmllist+="</table>";
 
 
 
@@ -198,8 +198,8 @@ public class AskActivity extends AppCompatActivity {
 
 
 
-                    mWebView.loadDataWithBaseURL(null, "<html><h2 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">조회결과</h2>"+ end+"<h3 >이 정보는 확진자와 물리적인 근접사실에 대한 것으로 감염여부를 결정하는 정보가 아닙니다." +
-                            "마스크착용 여부나 환기여부, 현재 증상등을 고려하여 검사나 자가휴식등의 의사결정하시기 바랍니다.  </h3></html>", "text/html", "utf-8", null);
+                    mWebView.loadDataWithBaseURL(null, "<html><h2 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">조회결과</h2>"+ end+"<h5 >이 정보는 확진자와 물리적인 근접사실에 대한 것으로 감염여부를 결정하는 정보가 아닙니다." +
+                            "마스크착용 여부나 환기여부, 현재 증상등을 고려하여 검사나 자가휴식등의 의사결정하시기 바랍니다.  </h5></html>", "text/html", "utf-8", null);
 
 
                     button.setEnabled(true);

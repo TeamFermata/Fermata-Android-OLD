@@ -671,6 +671,39 @@ public class    AdvertiserService extends Service {
 
                     // Notify notification
                     mNotificationHelper.notify(5, mBuilder);
+
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+
+                            AppDatabase instance = AppDatabase
+                                    .getInstance(getApplicationContext());
+
+
+
+
+                            int now= (int) (System.currentTimeMillis()/1000);
+
+                            String[] records =instance.getSignalLogDao().getUUIDRecord(now-CHECH_MINSEC);
+
+                            if(records!=null& records.length>0){
+
+                                getApplicationContext().sendBroadcast(new Intent(  getApplicationContext() , ScanReceiver.class).putExtra("uuid",records)
+                                        .putExtra("time",now));
+
+
+                            } else {
+
+
+
+                            }
+
+
+
+                        }
+                    }) .start() ;
                 }
 
             }

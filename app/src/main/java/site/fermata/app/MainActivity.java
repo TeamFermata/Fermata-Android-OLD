@@ -175,6 +175,8 @@ public class MainActivity extends AppCompatActivity {
                 startService(new Intent(MainActivity.this,AdvertiserService.class));
             }
         });
+      */
+       if(!BuildConfig.DEBUG) ( (Button) findViewById(R.id.send_button)).setVisibility(View.GONE);
         ( (Button) findViewById(R.id.send_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,7 +203,14 @@ public class MainActivity extends AppCompatActivity {
 
 
                         } else {
-                            toast("전송할 로그가 없습니다. 다른 기기에 설치해서 신호를 주고 받아야 저장됩니다.");
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    toast("전송할 로그가 없습니다. 다른 기기에 설치해서 신호를 주고 받아야 저장됩니다.");
+                                }
+                            });
+
                         }
 
 
@@ -209,8 +218,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }) .start() ;
             }
-        });*/
-
+        });
     }
 
     private void start() {

@@ -45,4 +45,7 @@ public class Constants {
 
   //  public  static  final  String SERVER_URL="https://nopd4pibsh.apigw.ntruss.com/API/prod/rivykMwR3e/json";
   public  static  final  String SERVER_URL="https://nopd4pibsh.apigw.ntruss.com/API/prod/rivykMwR3e/json";
+
+
+
 }

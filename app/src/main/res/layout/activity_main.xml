@@ -38,6 +38,15 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"></ImageView>
 
+            <Button
+                android:id="@+id/send_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="수집신호전송(테스트용)"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
@@ -49,6 +58,8 @@
                 app:layout_constraintTop_toTopOf="@+id/imageView_top"
                 app:layout_constraintVertical_bias="0.952"
                 tools:layout_editor_absoluteX="0dp" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout

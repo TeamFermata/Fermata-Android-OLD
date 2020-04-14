@@ -1,7 +1,28 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
+
+def propsFile = rootProject.file("../appkey/keystore.properties")
+// if (propsFile.exists()) {
+
+def props = new Properties()
+props.load(new FileInputStream(propsFile))
+
 android {
+    signingConfigs {
+        config  {
+
+
+               keyAlias props['keyAlias']
+            keyPassword props['keyPassword']
+            storeFile file("../../appkey/fermata1.jks")
+            storePassword props['storePassword']
+
+
+
+            //}
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
@@ -9,8 +30,8 @@ android {
         applicationId "site.fermata.app"
         minSdkVersion 22
         targetSdkVersion 29
-        versionCode 4
-        versionName "1.0"
+        versionCode 5
+        versionName '0.9'
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
@@ -28,6 +49,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.config
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
