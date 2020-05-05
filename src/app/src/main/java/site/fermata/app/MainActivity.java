@@ -64,18 +64,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-
-
-
-
         SharedPreferences prf = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 
-        if(prf.contains(PREF_ID)&&prf.contains("key")   ) {
-
-
+        if(prf.contains(PREF_ID)&&prf.contains("key")) {
             setTheme(R.style.AppTheme);
 
             super.onCreate(savedInstanceState);
@@ -84,8 +76,6 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent( this, SignUpActivity.class);
             finish();  //Kill the activity from which you will go to next activity
             startActivity(i);
-
-
             return ;
         }
 
@@ -136,16 +126,18 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
-        findViewById(R.id.about_btn).setOnClickListener(new View.OnClickListener() {
+        //베타버전 안내(추후 메인버전에선 앱 주요안내)
+        findViewById(R.id.HowToUse).setOnClickListener(new View.OnClickListener() { //구 R.id.about_btn
             @Override
             public void onClick(View v) {
               //  toast("준비중입니다.");
 
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://blog.fermata.site/1"));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://blog.fermata.site/"));
                 startActivity(browserIntent);
             }
         });
+
+        //뭐하는 기능인지 추가바람
         findViewById(R.id.manual_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,14 +148,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        findViewById(R.id.query_btn).setOnClickListener(new View.OnClickListener() {
+        //확진여부 확인버튼
+        findViewById(R.id.ScanInfection).setOnClickListener(new View.OnClickListener() { //구 R.id.query_btn
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),AskActivity.class));
             }
         });
-        findViewById(R.id.insert_btn).setOnClickListener(new View.OnClickListener() {
+
+        //확진자 등록버튼
+        findViewById(R.id.InsertInfection).setOnClickListener(new View.OnClickListener() { //구 R.id.insert_btn
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),InsertActivity.class));

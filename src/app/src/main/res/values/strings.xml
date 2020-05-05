@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">페르마타</string>
     <string name="bt_not_enabled_leaving">블루투스 기능이 없으면 시작할 수 없습니다.</string>
-    <string name="activity_main_title">페르마타</string>
+    <string name="activity_main_title">FERMATA</string>
 
     <string name="bt_not_supported">블루투스를 지원하지 않는 기기입니다.</string>
     <string name="bt_ads_not_supported">본 기기는 블루투스 신호 발신기능이 없습니다.</string>
