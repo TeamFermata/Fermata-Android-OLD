@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
               //  toast("준비중입니다.");
 
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://blog.fermata.site/"));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://blog.fermata.site/1"));
                 startActivity(browserIntent);
             }
         });
@@ -161,6 +161,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),InsertActivity.class));
+            }
+        });
+
+        //깃허브 URL 아이콘
+        findViewById(R.id.GithubICON).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/TracetogetherKorea"));
+                startActivity(browserIntent);
+            }
+        });
+
+        //티스토리 기술블로그 아이콘
+        findViewById(R.id.TistoryTechBlogICON).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://blog.fermata.site/"));
+                startActivity(browserIntent);
             }
         });
 
