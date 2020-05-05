@@ -1,0 +1,4 @@
+Fermata/dist/*
+.vscode/*
+*.zip
+Fermata/node_modules/*
