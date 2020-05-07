@@ -50,7 +50,6 @@ public class AskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_query);
         setTitle("근접기록정보 조회");
 
@@ -77,22 +76,11 @@ public class AskActivity extends AppCompatActivity {
 
         JSONObject jsonObject=new JSONObject();
 
-
-
-
-
         Single single=  HttpClient.checkAuth(prf,getApplicationContext())
-
                 .flatMap(
-
                         new Function<String, SingleSource<String>>() {
-
                             @Override
                             public SingleSource<String> apply(String ss) throws Exception {
-
-
-
-
                                 jsonObject.put("myID",  prf.getString(PREF_ID,""));
 
                                 jsonObject.put("sessionID",ss);
@@ -104,16 +92,15 @@ public class AskActivity extends AppCompatActivity {
                                         .post(RequestBody.create( jsonObject.toString(), MediaType.parse("application/json")))
                                         .build();
 
-
                                 Response responses = HttpClient.get().newCall(request).execute();
                                 if(responses.code()!=200){
                                     return Single.error( new Exception("ServerError"));
                                 }
 
                                 String jsonData = responses.body().string();
-
                                 JSONObject json = new JSONObject(jsonData);
                                 String code= json.getString("code");
+
                                 if(code.equals("success")) {
 
                                     String session= json.getString("newSessionID");
@@ -170,25 +157,17 @@ public class AskActivity extends AppCompatActivity {
 
                                     return Single.just(htmllist );
                                 } else {
-
                                     if(code.equals("fail_auth")) {
-
                                         prf.edit().remove("session").apply();
                                     }
-
                                     return  Single.timer(3, TimeUnit.SECONDS).flatMap(s->HttpClient.checkAuth(prf,getApplicationContext()))  . flatMap(this);
 
                                 }
-
                             }
                         }
 
                 ) .timeout(30,TimeUnit.SECONDS).subscribeOn(Schedulers.io())
-
-
                 .observeOn(AndroidSchedulers.mainThread());
-
-
 
         final Button button= (Button)  findViewById(R.id.ask_btn);
 
@@ -202,21 +181,13 @@ public class AskActivity extends AppCompatActivity {
                 disposables.add(single.subscribe(end -> {
 
                  //   mWebView .loadData("<h2 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">여기에 결과를 표시합니다.여기는 html로 렌더링..</h2>", "text/html", "UTF-8");
-
-
-
                     mWebView.loadDataWithBaseURL(null, "<html><h2 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">조회결과</h2>"+ end+"<h5 >이 정보는 확진자와 물리적인 근접사실에 대한 것으로 감염여부를 결정하는 정보가 아닙니다." +
                             "마스크착용 여부나 환기여부, 현재 증상등을 고려하여 검사나 자가휴식등의 의사결정하시기 바랍니다.  </h5></html>", "text/html", "utf-8", null);
-
-
                     button.setEnabled(true);
-
                 }, e -> {
-
                   //  mWebView .loadData("<h2 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">오류가 있습니다. 잠시후 다시 시도해주세요.</h2>", "text/html", "UTF-8");
 
                     mWebView.loadDataWithBaseURL(null, "<html><h3 style=\"padding-top:40px;color: #5e9ca0; text-align: center;\">조회를 하지 못했습니다. 잠시 후 다시 시작해주세요.</h3></html>", "text/html", "utf-8", null);
-
                     button.setEnabled(true);
 
                 }));
@@ -231,11 +202,8 @@ public class AskActivity extends AppCompatActivity {
         View.OnClickListener clickListener= new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Toast.makeText(getApplicationContext(),"이 기능 곧 구현예정입니다.",
                         Toast.LENGTH_SHORT).show();
-
-
             }
         };
 

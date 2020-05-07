@@ -62,7 +62,7 @@ import static site.fermata.app.Constants.Service_UUID;
  * If the app goes off screen (or gets killed completely) advertising can continue because this
  * Service is maintaining the necessary Callback in memory.
  */
-public class    AdvertiserService extends Service {
+public class AdvertiserService extends Service {
 
     private static final String TAG = AdvertiserService.class.getSimpleName();
 
@@ -181,32 +181,18 @@ public class    AdvertiserService extends Service {
                     instance
                             .getSignalLogDao()
                             .deleteOld();
-
                 }
 
-
-
                 int now= (int) (System.currentTimeMillis()/1000);
-
              String[] records =instance.getSignalLogDao().getUUIDRecord(now-CHECH_MINSEC);
 
               if(records!=null& records.length>0){
 
                   context.sendBroadcast(new Intent( context , ScanReceiver.class).putExtra("uuid",records)
                   .putExtra("time",now));
-
-
               }
-
-
-
             }
         }) .start() ;
-
-
-
-
-
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -222,15 +208,11 @@ public class    AdvertiserService extends Service {
                // mBluetoothAdapter.setName("zhfhskwnrdlrl");
                 if (mBluetoothAdapter != null) {
                     mBluetoothLeAdvertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
-
-
                 } else {
-
                     stopped("블루투스 꺼짐");
                    // Toast.makeText(this, getString(R.string.bt_null), Toast.LENGTH_LONG).show();
                 }
             } else {
-
                 stopped("시작오류");
                // Toast.makeText(this, getString(R.string.bt_null), Toast.LENGTH_LONG).show();
             }
@@ -268,16 +250,12 @@ public class    AdvertiserService extends Service {
             byte[] b = new byte[9];
             new Random().nextBytes(b);
 
-
             AdvertiseData data = buildAdvertiseData(b);
             mAdvertiseCallback = new SampleAdvertiseCallback(b);
 
             if (mBluetoothLeAdvertiser != null) {
-
                 mBluetoothLeAdvertiser.startAdvertising(settings, data,
                     mAdvertiseCallback);
-
-
             } else {
                 stopped("블루투스 꺼짐");
             }
@@ -294,35 +272,24 @@ public class    AdvertiserService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
             notificationIntent, 0);
 
-
         NotificationCompat.Builder n = mNotificationHelper
                 .getNotification("페르마타가 실행중입니다.", "", pendingIntent);
-
-
         startForeground(FOREGROUND_NOTIFICATION_ID, n.build());
     }
 
     private void stopped(String s){
-
         stopAdvertising();
         stopScanning();
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 notificationIntent, 0);
 
-
         NotificationCompat.Builder n = mNotificationHelper
-
-
                 .getNotification("페르마타 중지됨-"+s, "터치하면 다시 시작합니다.", pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 ;
 
-
-
         mNotificationHelper.notify(FOREGROUND_NOTIFICATION_ID, n);
-
-
     }
 
 
@@ -452,31 +419,25 @@ public class    AdvertiserService extends Service {
             Log.d(TAG, "Advertising failed"+ errorCode);
             sendFailureIntent(errorCode);
             stopSelf();
-
         }
 
         @Override
         public void onStartSuccess(AdvertiseSettings settingsInEffect) {
             super.onStartSuccess(settingsInEffect);
 
-
             class NewRunnable implements Runnable {
-
                 @Override
                 public void run() {
-
                     AppDatabase
                             .getInstance(context)
                             .getTempSignalDao()
                             .insert(new TempSignal( bytesToHex(uuid)  ));
-
                 }
             }
 
             NewRunnable nr = new NewRunnable() ;
             Thread t = new Thread(nr) ;
             t.start() ;
-
 
             Log.d(TAG, "Advertising successfully started");
         }
@@ -496,19 +457,14 @@ public class    AdvertiserService extends Service {
 
     public void setBluetoothAdapter(BluetoothAdapter btAdapter) {
         this.mBluetoothAdapter = btAdapter;
-
     }
-
-
-
-
 
 
     /**
      * Start scanning for BLE Advertisements (& set it up to stop after a set period of time).
      */
     public void startScanning() {
-        if (  mScanCallback == null) {
+        if(mScanCallback == null) {
             Log.d(TAG, "Starting Scanning");
 
             // Will stop the scanning after a set time.
@@ -523,12 +479,9 @@ public class    AdvertiserService extends Service {
             mScanCallback = new SampleScanCallback();
 
             if(mBluetoothLeScanner==null) {
-
                 stopped("블루투스 꺼짐");
                 return; }
             mBluetoothLeScanner.startScan(buildScanFilters(), buildScanSettings(), mScanCallback);
-
-
         } else {
            // Toast.makeText(getApplicationContext(), R.string.already_scanning, Toast.LENGTH_SHORT).show();
         }
@@ -545,13 +498,11 @@ public class    AdvertiserService extends Service {
         mScanCallback = null;
 
         // Even if no new results, update 'last seen' times.
-
     }
 
     /**
      * Return a List of {@link ScanFilter} objects to filter by Service UUID.
      */
-
 
     private List<ScanFilter> buildScanFilters() {
         List<ScanFilter> scanFilters = new ArrayList<>();
@@ -568,8 +519,6 @@ public class    AdvertiserService extends Service {
         //builder.setDeviceName("zhfhskwnrdlrl");
         //builder.setManufacturerData()
         scanFilters.add(builder.build());
-
-
 
         return scanFilters;
     }
@@ -591,24 +540,17 @@ public class    AdvertiserService extends Service {
     private HashMap<String,Integer> cachedUUID= new HashMap<>();
 
     private  void  checkScan(ScanResult result ){
-
-
        final int now=(int) (System.currentTimeMillis()/1000);
 
-        //;
-
         byte[] signal = result.getScanRecord().getManufacturerSpecificData(1023);
-
-
             String uuid=bytesToHex(signal);
             Integer h = cachedUUID.get(uuid);
 
         if(h==null) {
-
             cachedUUID.put(uuid,now);
         } else
 
-            if( now> Math.abs(h)+ 60*60 ) {
+            if(now > Math.abs(h)+ 60*60 ) {
                 //cachedUUID.remove(uuid);
                 cachedUUID.remove(uuid);
             } else  if(h<0){
@@ -617,24 +559,15 @@ public class    AdvertiserService extends Service {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-
-
                         AppDatabase
                                 .getInstance(context)
                                 .getSignalLogDao()
-
                                 .updateTimeSpan(uuid,f,  now-f,result.getRssi());
-
-
                     }
                 }) .start() ;
-
-
             }
                 else if( now-h> CHECH_MINSEC)
             {
-
-
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -643,19 +576,12 @@ public class    AdvertiserService extends Service {
                                 .getSignalLogDao()
                                 .insert(new SignalLog(uuid,result.getRssi(),true, CHECH_MINSEC , now));
 
-
-
-
                         cachedUUID.put(uuid,-now);
-
                     }
                 }) .start() ;
 
 
                 if(IS_BETA ||BuildConfig.DEBUG ) {
-
-
-
                     Notification n = new Notification.Builder(this)
                             .setContentTitle("scanced")
                             .setContentText(uuid.toString())
@@ -666,7 +592,6 @@ public class    AdvertiserService extends Service {
 
                     // notificationId is a unique int for each notification that you must define
                     notificationManager.notify(now % 2323, n);
-
 
                     NotificationCompat.Builder mBuilder = mNotificationHelper
                             .getNotification("알파버젼테스트용 알림-접근발견",
@@ -682,46 +607,24 @@ public class    AdvertiserService extends Service {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-
-
                             AppDatabase instance = AppDatabase
                                     .getInstance(getApplicationContext());
 
-
-
-
                             int now= (int) (System.currentTimeMillis()/1000);
-
                             String[] records =instance.getSignalLogDao().getUUIDRecord(now-CHECH_MINSEC);
 
                             if(records!=null& records.length>0){
-
                                 getApplicationContext().sendBroadcast(new Intent(  getApplicationContext() , ScanReceiver.class).putExtra("uuid",records)
                                         .putExtra("time",now));
-
-
                             } else {
 
-
-
                             }
-
-
 
                         }
                     }) .start() ;
                 }
 
             }
-
-
-
-
-
-
-
-
-
     }
 
     private class SampleScanCallback extends ScanCallback {
@@ -732,7 +635,6 @@ public class    AdvertiserService extends Service {
             Log.d("onScanResult","");
             for (ScanResult result : results) {
               //  mAdapter.add(result);
-
                 checkScan(result);
                 //Toast.makeText(getApplicationContext(), result.toString() , Toast.LENGTH_LONG).show();
             }
@@ -742,7 +644,6 @@ public class    AdvertiserService extends Service {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
-
             checkScan(result);
             //        Toast.makeText(getApplicationContext(), result.toString() , Toast.LENGTH_LONG).show();
          //   mAdapter.add(result);

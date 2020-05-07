@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
     private BluetoothAdapter mBluetoothAdapter;
 
-
+    //앱 시작시
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences prf = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
         if(prf.contains(PREF_ID)&&prf.contains("key")) {
             setTheme(R.style.AppTheme);
-
             super.onCreate(savedInstanceState);
         } else {
             super.onCreate(savedInstanceState);
@@ -70,47 +69,33 @@ public class MainActivity extends AppCompatActivity {
             return ;
         }
 
-
         setContentView(R.layout.activity_main);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         setTitle(R.string.activity_main_title);
 
         if (savedInstanceState == null) {
-
             mBluetoothAdapter = ((BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE))
                     .getAdapter();
-
-            // Is Bluetooth supported on this device?
+            // 블루투스 지원여부
             if (mBluetoothAdapter != null) {
-
-                // Is Bluetooth turned on?
+                // 블루투스 켜짐 여부
                 if (mBluetoothAdapter.isEnabled()) {
-
-                    // Are Bluetooth Advertisements supported on this device?
+                    // BLE 송수신 지원여부
                     if (mBluetoothAdapter.isMultipleAdvertisementSupported()) {
-
-                        // Everything is supported and enabled, load the fragments.
-
+                        // 모든게 지원할 시 앱 시작
                         start();
-
-
-
-
                     } else {
-
-                        // Bluetooth Advertisements are not supported.
+                        // BLE 송수신 미지원
                         toast(R.string.bt_ads_not_supported);
                         finish();
                     }
                 } else {
-
-                    // Prompt user to turn on Bluetooth (logic continues in onActivityResult()).
+                    // 블루투스 켜기 요구하기
                     Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBtIntent, Constants.REQUEST_ENABLE_BT);
                 }
             } else {
-
-                // Bluetooth is not supported.
+                // 블루투스 미지원
                 toast(R.string.bt_not_supported);
                 finish();
             }
@@ -180,44 +165,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
       */
-       if(!BuildConfig.DEBUG) ( (Button) findViewById(R.id.send_button)).setVisibility(View.GONE);
-        ( (Button) findViewById(R.id.send_button)).setOnClickListener(new View.OnClickListener() {
+
+       if(!BuildConfig.DEBUG) ((Button)findViewById(R.id.send_button)).setVisibility(View.GONE);
+        ((Button)findViewById(R.id.send_button)).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
 
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-
-
+                        //데이터베이스 로드
                         AppDatabase instance = AppDatabase
                                 .getInstance(getApplicationContext());
-
-
-
-
                         int now= (int) (System.currentTimeMillis()/1000);
 
+                        //접촉 기록 불러오기
                         String[] records =instance.getSignalLogDao().getUUIDRecord(now-CHECH_MINSEC);
-
-                        if(records!=null& records.length>0){
-
-                            getApplicationContext().sendBroadcast(new Intent(  getApplicationContext() , ScanReceiver.class).putExtra("uuid",records)
+                        if(records!=null& records.length>0){ //전송할 접촉기록이 있다면
+                            getApplicationContext().sendBroadcast(new Intent(getApplicationContext(), ScanReceiver.class).putExtra("uuid", records)
                                     .putExtra("time",now));
-
-
-                        } else {
-
+                        } else { //전송할 접촉기록이 없다면
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     toast("전송할 로그가 없습니다. 다른 기기에 설치해서 신호를 주고 받아야 저장됩니다.");
                                 }
                             });
-
                         }
-
-
 
                     }
                 }) .start() ;
@@ -237,29 +211,24 @@ public class MainActivity extends AppCompatActivity {
                     if (tedPermissionResult.isGranted()) {
                        //toast("권한이 수락되었습니다.");
                         MainActivity.this.sendBroadcast(new Intent( MainActivity.this , ScanReceiver.class));
-
-
                     } else {
-
                         toast("권한이 거부되었습니다. 사용하시려면 다시 시작해주세요");
                         finish();
-
                     }
                 }, throwable -> {
                 });
     }
 
+    //Toast 띄우기(스트링 리소스)
     private void toast(int s) {
         Toast.makeText(this,s,
                 Toast.LENGTH_SHORT).show();
-
     }
 
+    //Toast 띄우기(스트링)
     private void toast(String s) {
-
                 Toast.makeText(this,s,
                 Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
@@ -275,9 +244,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // Bluetooth Advertisements are not supported.
                     start();
-
                 } else {
-
                     // User declined to enable Bluetooth,
                     toast(R.string.bt_not_enabled_leaving);
                     finish();
@@ -287,7 +254,5 @@ public class MainActivity extends AppCompatActivity {
                 super.onActivityResult(requestCode, resultCode, data);
         }
     }
-
-
 
 }

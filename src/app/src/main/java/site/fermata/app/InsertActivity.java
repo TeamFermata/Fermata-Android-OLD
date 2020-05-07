@@ -85,17 +85,14 @@ public class InsertActivity extends AppCompatActivity {
                         new Function<String, SingleSource<String>>() {
                             @Override
                             public SingleSource<String> apply(String ss) throws Exception {
-
                                 jsonObject.put("email", email.getText().toString());
                                 jsonObject.put("pnumstr", pnumstr.getText().toString());
-
                                 jsonObject.put("numstr", numstr.getText().toString());
 
                                 List<String> list = AppDatabase
                                         .getInstance(getApplicationContext())
                                         .getTempSignalDao()
                                         .getAllSignal();
-
 
                                 jsonObject.put("record",  new JSONArray(list));
 
@@ -111,38 +108,28 @@ public class InsertActivity extends AppCompatActivity {
                                         .build();
                                 if(BuildConfig.DEBUG){
                                     Log.d("d", jsonObject.toString());
-
                                 }
 
                                 Response responses = HttpClient.get().newCall(request).execute();
-
                                 if(responses.code()!=200){
                                     return Single.error( new Exception("ServerError"));
                                 }
-
                                 String jsonData = responses.body().string();
-
-
                                 JSONObject json = new JSONObject(jsonData);
                                 String code= json.getString("code");
+
                                 if(code.equals("success")) {
 
                                     String session= json.getString("newSessionID");
-
                                     prf.edit().putString("session",session).apply();
 
                                       return Single.just("");
                                 } else {
-
                                     if(code.equals("fail_auth")) {
-
                                         prf.edit().remove("session").apply();
                                     }
-
-                                    return  (disposables.isDisposed())?Single.never(): Single.timer(3, TimeUnit.SECONDS).flatMap(s->HttpClient.checkAuth(prf,getApplicationContext())) .flatMap(this);
-
+                                    return(disposables.isDisposed())?Single.never(): Single.timer(3, TimeUnit.SECONDS).flatMap(s->HttpClient.checkAuth(prf,getApplicationContext())) .flatMap(this);
                                 }
-
                             }
                         }
 
@@ -160,15 +147,11 @@ public class InsertActivity extends AppCompatActivity {
             public void onClick(View v) {
                 v.setEnabled(false);
                 disposables.add(single.subscribe(end->{
-
-
                     Toast.makeText(getApplicationContext(),"감사합니다.",
                             Toast.LENGTH_SHORT).show();
-
                    finish();
 
                 }, e->{
-
                     Toast.makeText(getApplicationContext(),"오류가 있습니다.:"+e.toString(),
                             Toast.LENGTH_SHORT).show();
                     v.setEnabled(true);
@@ -185,13 +168,10 @@ public class InsertActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 button.setEnabled(checkBox1.isChecked());
-
-
             }
         };
 
         checkBox1.setOnClickListener(clickListener);
-
     }
 
     @Override

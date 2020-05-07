@@ -53,15 +53,12 @@ public class ScanReceiver extends BroadcastReceiver {
         SharedPreferences prf = PreferenceManager.getDefaultSharedPreferences(context);
 
 
-
-
         if(intent.hasExtra("uuid")) {
             OkHttpClient client;  client=HttpClient.get();
             String[] uuid=intent.getStringArrayExtra("uuid");
             final int time=intent.getIntExtra("time",0);
             JSONObject jsonObject=new JSONObject();
             try {
-
                 jsonObject.put("myID", prf.getString(PREF_ID,""));
                 jsonObject.put("record",  new JSONArray(uuid));
 
@@ -69,12 +66,8 @@ public class ScanReceiver extends BroadcastReceiver {
                 Log.d("",e.toString());
             }
 
-
-
          HttpClient.checkAuth(prf,context)
-
                  .flatMap(
-
                          new Function<String, SingleSource<String>>() {
                              @Override
                              public SingleSource<String> apply(String ss) throws Exception {
@@ -89,11 +82,9 @@ public class ScanReceiver extends BroadcastReceiver {
                                          .build();
                                     if(BuildConfig.DEBUG){
                                         Log.d("d", jsonObject.toString());
-
                                     }
 
                                  Response responses = client.newCall(request).execute();
-
                                  String jsonData = responses.body().string();
 
                                  JSONObject json = new JSONObject(jsonData);
@@ -101,40 +92,28 @@ public class ScanReceiver extends BroadcastReceiver {
                                  if(code.equals("success")) {
 
                                      String session= json.getString("newSessionID");
-
                                      prf.edit().putString("session",session).apply();
-
 
                                      AppDatabase instance = AppDatabase
                                              .getInstance(context);
-
                                          instance
                                                  .getSignalLogDao()
                                                  .flagUploaded(time);
 
                                      return Single.just("");
                                  } else {
-
                                      if(code.equals("fail_auth")) {
-
                                          prf.edit().remove("session").apply();
                                          return  Single.timer(3, TimeUnit.SECONDS).flatMap(s->HttpClient.checkAuth(prf,context)) .flatMap(this);
-
                                      } else {
-
                                          return Single.error(new Exception(code));
                                      }
-
-
                                  }
-
                              }
                          }
-
                          ) .timeout(12, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
                  .observeOn(AndroidSchedulers.mainThread())
-
-                  .  subscribe(new SingleObserver<String>() {
+                  .subscribe(new SingleObserver<String>() {
                 @Override
                 public void onSubscribe(Disposable d) {
 
@@ -162,9 +141,6 @@ public class ScanReceiver extends BroadcastReceiver {
                     p.finish();
                 }
             });
-
-
-
         }
 
         else {
@@ -190,9 +166,6 @@ public class ScanReceiver extends BroadcastReceiver {
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
                     SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR,
                     AlarmManager.INTERVAL_HOUR, pendingIntent);
-
-
-
                 p.finish();
         }
     }

@@ -52,9 +52,6 @@ public class SignUpActivity extends Activity {
         setContentView(R.layout.activity_sign_up);
         setTitle(R.string.activity_main_title);
 
-
-
-
         WebView mWebView = (WebView) findViewById(R.id.webView);
 
         mWebView.setWebViewClient(new WebViewClient()); // 클릭시 새창 안뜨게
@@ -72,15 +69,8 @@ public class SignUpActivity extends Activity {
         mWebSettings.setDomStorageEnabled(true); // 로컬저장소 허용 여부
 
         mWebView.loadUrl(MAINURL); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
-
-
         OkHttpClient client =HttpClient.get();
-
-
-
-
         final CheckBox checkBox2 = (CheckBox) findViewById(R.id.checkBox2) ;
-
 
         View.OnClickListener checklisten = new View.OnClickListener() {
             @Override
@@ -95,12 +85,8 @@ public class SignUpActivity extends Activity {
                                    "https://docs.google.com/document/d/e/2PACX-1vSM0Ani63nLRNgG8Ov_kk8L4Iw4-c2sdlevPitt5VSpPicmJekw7VJcc6i7F6F5mWNQbobUrnxJCIN2/pub"
                            ); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
                     mWebView.loadUrl(MAINURL); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
-
                     b.setText("보기");
-
                 }
-
-
             }
         };
         findViewById(R.id.privacy).setOnClickListener(checklisten);
@@ -113,7 +99,6 @@ public class SignUpActivity extends Activity {
             public void onClick(View v) {
                 button.setEnabled(checkBox1.isChecked() && checkBox2.isChecked());
 
-
             }
         };
 
@@ -125,18 +110,16 @@ public class SignUpActivity extends Activity {
             public void onClick(View v) {
                 button.setEnabled(false);
                 button.setText("잠시 기다려주세요.");
-            final     String id= UUID.randomUUID().toString();
+            final String id= UUID.randomUUID().toString();
               //  UUID.randomUUID().toString();
-             final   String key= generateRandomPassword(15) ;
+             final String key= generateRandomPassword(15);
 
                 try{
-
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("path","user")
                             .put("method","put")
                             .put("id",  id)
                             .put("password", key);
-
 
                     Request request = new Request.Builder()
                             //.addHeader("x-api-key", RestTestCommon.API_KEY)
@@ -150,46 +133,31 @@ public class SignUpActivity extends Activity {
                         //비동기 처리를 위해 Callback 구현
                         @Override
                         public void onFailure(Call call, IOException e) {
-
                            runOnUiThread(new Runnable() {
                                @Override
                                public void run() {
                                    button.setEnabled(true);
                                    Toast.makeText(SignUpActivity.this,"네트워크연결 상태를 확인후,다시 시도해주세요"+e.toString(),Toast.LENGTH_LONG).show();
-
                                }
                            });
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-
-
-
-
-
                             SharedPreferences prf = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                             prf.edit().putString(PREF_ID,id).putString("key",key).putString("session","dsfdsdfs").commit();
                             Intent i = new Intent( SignUpActivity.this, MainActivity.class);
                             finish();  //Kill the activity from which you will go to next activity
                             startActivity(i);
-
                         }
                     });
 
                 } catch (Exception e) {
                    Toast.makeText(SignUpActivity.this,"네트워크연결 상태를 확인후,다시 시도해주세요",Toast.LENGTH_LONG).show();
                 }
-
-
-
-
-
             }
         });
 
 
     }
-
-
 }

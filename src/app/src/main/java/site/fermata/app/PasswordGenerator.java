@@ -40,9 +40,7 @@ public class PasswordGenerator {
 
             // debug
             System.out.format("%d\t:\t%c%n", rndCharAt, rndChar);
-
             sb.append(rndChar);
-
         }
 
         return sb.toString();
@@ -51,7 +49,6 @@ public class PasswordGenerator {
 
     // shuffle
     public static String shuffleString(String input) {
-
         List<Character> characters = new ArrayList<Character>();
         for(char c:input.toCharArray()){
             characters.add(c);
@@ -61,7 +58,6 @@ public class PasswordGenerator {
             int randPicker = (int)(Math.random()*characters.size());
             output.append(characters.remove(randPicker));
         }
-
 
         return  output.toString();
     }
