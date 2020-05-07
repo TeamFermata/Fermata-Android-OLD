@@ -1,5 +1,12 @@
-package site.fermata.app.db;
+/*
+    Copyright © 2007 Free Software Foundation, Inc. <https://fsf.org/>
+    Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+    Github Repository : https://github.com/TracetogetherKorea/Fermata-Android
 
+    - 임시 시그널 데이터베이스 -
+ */
+
+package site.fermata.app.db;
 import java.util.List;
 
 import androidx.room.Dao;
@@ -7,7 +14,6 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import site.fermata.app.Constants;
-
 
 @Dao
 public interface TempSignalDao {
