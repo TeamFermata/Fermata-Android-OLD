@@ -1,5 +1,12 @@
-package site.fermata.app;
+/*
+    Copyright © 2007 Free Software Foundation, Inc. <https://fsf.org/>
+    Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+    Github Repository : https://github.com/TracetogetherKorea/Fermata-Android
 
+    - RESTFUL API HTTPClient -
+ */
+
+package site.fermata.app;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;

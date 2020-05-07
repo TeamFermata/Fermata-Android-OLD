@@ -1,5 +1,12 @@
-package site.fermata.app;
+/*
+    Copyright © 2007 Free Software Foundation, Inc. <https://fsf.org/>
+    Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+    Github Repository : https://github.com/TracetogetherKorea/Fermata-Android
 
+    - 스캔 리시버 -
+ */
+
+package site.fermata.app;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;

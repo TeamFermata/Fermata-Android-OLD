@@ -1,5 +1,12 @@
-package site.fermata.app;
+/*
+    Copyright © 2007 Free Software Foundation, Inc. <https://fsf.org/>
+    Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+    Github Repository : https://github.com/TracetogetherKorea/Fermata-Android
 
+    - 페르마타 표준 BLE 송수신 클래스 -
+ */
+
+package site.fermata.app;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -49,7 +56,6 @@ import java.util.concurrent.TimeUnit;
 import static site.fermata.app.Constants.CHECH_MINSEC;
 import static site.fermata.app.Constants.IS_BETA;
 import static site.fermata.app.Constants.Service_UUID;
-
 
 /**
  * Manages BLE Advertising independent of the main app.

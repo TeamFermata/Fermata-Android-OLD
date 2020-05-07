@@ -1,5 +1,12 @@
-package site.fermata.app;
+/*
+    Copyright © 2007 Free Software Foundation, Inc. <https://fsf.org/>
+    Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+    Github Repository : https://github.com/TracetogetherKorea/Fermata-Android
 
+    - 회원가입 액티비티 -
+ */
+
+package site.fermata.app;
 import androidx.preference.PreferenceManager;
 import okhttp3.Call;
 import okhttp3.Callback;

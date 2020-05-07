@@ -1,12 +1,17 @@
-package site.fermata.app;
+/*
+    Copyright © 2007 Free Software Foundation, Inc. <https://fsf.org/>
+    Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+    Github Repository : https://github.com/TracetogetherKorea/Fermata-Android
 
+    - RESTFUL API 패스워드 생성 클래스 -
+ */
+
+package site.fermata.app;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-
 
 public class PasswordGenerator {
 
