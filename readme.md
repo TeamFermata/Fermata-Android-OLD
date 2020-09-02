@@ -15,5 +15,5 @@ Fermata Android
 
 
 사용 언어 : Java   
-개발자 : cyflux/CRUSHU/Taehyun-Dev/Soonee
+개발자 : cyflux/V!NT0/Taehyun-Dev/Soonee
 
